@@ -7,7 +7,7 @@ const BUILD_DIRECTORY = 'dist';
 const PRODUCTION = process.env.NODE_ENV === 'production';
 
 // Config entrypoint files
-const ENTRY_POINTS = ['src/index.ts'];
+const ENTRY_POINTS = ['src/createAccount.ts', 'src/utils/inputValidation.ts'];
 
 // Config dev serving
 const LIVE_RELOAD = !PRODUCTION;
