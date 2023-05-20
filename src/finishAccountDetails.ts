@@ -8,10 +8,10 @@ authenticate();
 localStorage.removeItem('studentID');
 
 // Import and use the addFileUploadListener function from utils/imageUpload.ts
-import { uploadStudentImage } from './utils/imageUpload';
+import { uploadGuardianImage } from './utils/imageUpload';
 
 const imageUploadInput = document.getElementById('imageUpload') as HTMLInputElement;
-uploadStudentImage(imageUploadInput);
+uploadGuardianImage(imageUploadInput);
 
 // Import inputValidation functions
 import { validatePhone } from './utils/inputValidation';
@@ -31,5 +31,23 @@ yMember.addEventListener('change', () => {
     }, 0);
   } else {
     yMemberInput.style.height = '0rem';
+  }
+});
+
+//import updateGuardianProfile function
+import { finishGuardianAccountSetup } from './utils/requests/guardianRequests';
+
+// prevent form submit button from submitting form if any input is invalid
+const submitButton = document.getElementById('submitButton') as HTMLButtonElement;
+submitButton.addEventListener('click', (e) => {
+  if (!validatePhone()) {
+    e.preventDefault();
+    //display error message
+    const submitError = document.getElementById('submitError') as HTMLDivElement;
+    submitError.style.display = 'block';
+    submitError.textContent = 'Please make sure you have entered all fields correctly.';
+  } else {
+    e.preventDefault();
+    finishGuardianAccountSetup();
   }
 });

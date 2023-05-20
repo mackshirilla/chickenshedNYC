@@ -28,12 +28,14 @@ export function uploadGuardianImage(inputElement: HTMLInputElement) {
         loadingImageAnimation.style.display = 'flex';
 
         try {
-          // Get the studentID from localStorage
-          const guardianID = localStorage.getItem('guardianID');
+          // Get the profile object from localStorage
+          const profileString = localStorage.getItem('profile');
+          const profile = profileString ? JSON.parse(profileString) : null;
+          const guardianID = profile ? profile.id : null;
 
-          // Send the base64 string and studentID to the endpoint
+          // Send the base64 string and guardianID to the endpoint
           const response = await fetch(
-            'https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/studentImages',
+            'https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/guardianImages',
             {
               method: 'POST',
               headers: {

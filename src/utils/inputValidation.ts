@@ -16,9 +16,9 @@ export function validateFirstName() {
   return true;
 }
 
-firstNameInput.addEventListener('blur', () => {
-  validateFirstName();
-});
+if (firstNameInput) {
+  firstNameInput.addEventListener('blur', validateFirstName);
+}
 
 // Validate Last Name Input
 const lastNameInput = document.getElementById('lastNameInput') as HTMLInputElement;
@@ -38,9 +38,9 @@ export function validateLastName() {
   return true;
 }
 
-lastNameInput.addEventListener('blur', () => {
-  validateLastName();
-});
+if (lastNameInput) {
+  lastNameInput.addEventListener('blur', validateLastName);
+}
 
 // Validate Email Input
 const emailInput = document.getElementById('emailInput') as HTMLInputElement;
@@ -66,9 +66,9 @@ export function validateEmail() {
   return true;
 }
 
-emailInput.addEventListener('blur', () => {
-  validateEmail();
-});
+if (emailInput) {
+  emailInput.addEventListener('blur', validateEmail);
+}
 
 // Validate Phone Input
 const phoneInput = document.getElementById('phoneInput') as HTMLInputElement;
@@ -109,16 +109,14 @@ export function validatePhone() {
   phoneInput.classList.remove('error');
   return true;
 }
+if (phoneInput) {
+  phoneInput.addEventListener('input', (event) => {
+    const input = event.target as HTMLInputElement;
+    input.value = formatPhoneNumber(input.value);
+    validatePhone();
+  });
+}
 
-phoneInput.addEventListener('blur', () => {
-  validatePhone();
-});
-
-phoneInput.addEventListener('input', (event) => {
-  const input = event.target as HTMLInputElement;
-  input.value = formatPhoneNumber(input.value);
-  validatePhone();
-});
 //validate DOB
 const dobInput = document.getElementById('dobInput') as HTMLInputElement;
 const dobError = document.getElementById('dobError') as HTMLDivElement;
@@ -136,37 +134,6 @@ export function validateDOB() {
   return true;
 }
 
-dobInput.addEventListener('blur', () => {
-  validateDOB();
-});
-//profile image
-const input_file = document.getElementById('input_file') as HTMLInputElement;
-const profileImage = document.getElementById('profileImage') as HTMLImageElement;
-const fileError = document.getElementById('fileError') as HTMLDivElement;
-
-export let uploadImage: File | null = null;
-
-input_file.addEventListener('change', () => {
-  const selectedImage = input_file.files?.[0];
-  if (selectedImage) {
-    if (selectedImage.size > 2 * 1024 * 1024) {
-      fileError.textContent = 'File size must be less than 2MB';
-      fileError.style.display = 'block';
-      return;
-    }
-    const reader = new FileReader();
-    reader.readAsDataURL(selectedImage);
-    reader.onload = () => {
-      profileImage.src = reader.result as string;
-    };
-    uploadImage = selectedImage;
-    fileError.textContent = '';
-    fileError.style.display = 'none';
-  } else {
-    profileImage.src =
-      'https://assets.website-files.com/64404db37a2b832b7d5aa9f8/64404db37a2b831d465aaa01_image.svg';
-    uploadImage = null;
-    fileError.textContent = '';
-    fileError.style.display = 'none';
-  }
-});
+if (dobInput) {
+  dobInput.addEventListener('blur', validateDOB);
+}
