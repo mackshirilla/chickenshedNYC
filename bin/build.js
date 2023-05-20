@@ -8,8 +8,8 @@ const PRODUCTION = process.env.NODE_ENV === 'production';
 
 // Config entrypoint files
 const ENTRY_POINTS = [
-  'src/createAccountNew.ts',
-  'src/addStudentNew.ts',
+  'src/createAccount.ts',
+  'src/addStudent.ts',
   'src/finishAccountDetails.ts',
   'src/finishStudentAccount.ts',
 ];

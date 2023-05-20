@@ -1,5 +1,5 @@
 // authenticate user on page load
-import { authenticate } from './utils/requests/authenticateUser';
+import { authenticate } from './utils/requests/auth/authenticateUser';
 //run authenticate function
 authenticate();
 //console.log('authenticated');
@@ -8,13 +8,13 @@ authenticate();
 localStorage.removeItem('studentID');
 
 // Import and use the addFileUploadListener function from utils/imageUpload.ts
-import { uploadGuardianImage } from './utils/imageUpload';
+import { uploadGuardianImage } from './utils/forms/imageUpload';
 
 const imageUploadInput = document.getElementById('imageUpload') as HTMLInputElement;
 uploadGuardianImage(imageUploadInput);
 
 // Import inputValidation functions
-import { validatePhone } from './utils/inputValidation';
+import { validatePhone } from './utils/forms/inputValidation';
 
 // use event listeners to call all the inputValidation functions when a user interacts with an input element.
 const phoneInput = document.getElementById('phoneInput');

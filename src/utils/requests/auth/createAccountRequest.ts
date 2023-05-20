@@ -44,17 +44,24 @@ export async function createAccount() {
       localStorage.setItem('profile', JSON.stringify(responseData));
       // Store authToken to local storage
       localStorage.setItem('authToken', responseData.authToken);
-
-      // Redirect to new path on successful response
-      window.location.href = '/my-account/step-2';
+      // get local storage profile role
+      const profile = JSON.parse(localStorage.getItem('profile') || '{}');
+      const { role } = profile;
+      // redirect to correct page based on role
+      if (role === 'student') {
+        window.location.href = 'my-account/finish-student-profile';
+      } else if (role === 'guardian') {
+        window.location.href = 'my-account/step-2';
+      } else {
+        // display error saying can't find profile role
+        submitError.textContent = 'No profile role found';
+        // Show the error message
+        submitError.style.display = 'block';
+      }
     }
   } catch (error) {
-    // Network or other fetch errors
-    const errorMsg = (error as Error).message;
-    submitError.textContent = errorMsg || 'An error occurred';
-    // Show the error message
-    submitError.style.display = 'block';
-
+    console.error(error);
+  } finally {
     // Hide loading animation
     loadingAnimation.style.display = 'none';
   }

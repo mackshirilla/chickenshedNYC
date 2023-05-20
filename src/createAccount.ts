@@ -1,5 +1,5 @@
-import { validateEmail, validateFirstName, validateLastName } from './utils/inputValidation';
-import { createAccount } from './utils/requests/createAccountRequest';
+import { validateEmail, validateFirstName, validateLastName } from './utils/forms/inputValidation';
+import { createAccount } from './utils/requests/auth/createAccountRequest';
 
 const submitButton = document.getElementById('submitButton') as HTMLButtonElement;
 

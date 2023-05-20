@@ -1,3 +1,4 @@
+//Finish Guardian Account Setup
 export async function finishGuardianAccountSetup() {
   const profileString = localStorage.getItem('profile');
   const profile = profileString ? JSON.parse(profileString) : null;
