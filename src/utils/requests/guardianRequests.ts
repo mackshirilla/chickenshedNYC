@@ -52,7 +52,7 @@ export async function finishGuardianAccountSetup() {
         // store profile in localStorage
         const responseData = await response.json();
         localStorage.setItem('profile', JSON.stringify(responseData));
-        window.location.href = '/my-account/setup-complete';
+        window.location.href = '/create-account/setup-complete';
         //console.log(responseData);
       }
     } catch (error) {

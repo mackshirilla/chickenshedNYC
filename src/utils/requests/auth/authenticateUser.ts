@@ -1,3 +1,4 @@
+//Authenticate User
 export function authenticate() {
   const authToken = localStorage.getItem('authToken');
 

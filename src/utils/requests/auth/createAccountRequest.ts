@@ -41,17 +41,19 @@ export async function createAccount() {
       const responseData = await response.json();
 
       // Store response data to local storage
-      localStorage.setItem('profile', JSON.stringify(responseData));
+      localStorage.setItem('profile', JSON.stringify(responseData.userCreated));
       // Store authToken to local storage
       localStorage.setItem('authToken', responseData.authToken);
+      // Store role to local storage
+      localStorage.setItem('role', responseData.role);
       // get local storage profile role
       const profile = JSON.parse(localStorage.getItem('profile') || '{}');
       const { role } = profile;
       // redirect to correct page based on role
       if (role === 'student') {
-        window.location.href = 'my-account/finish-student-profile';
+        window.location.href = 'create-account/finish-student-profile';
       } else if (role === 'guardian') {
-        window.location.href = 'my-account/step-2';
+        window.location.href = 'create-account/step-2';
       } else {
         // display error saying can't find profile role
         submitError.textContent = 'No profile role found';

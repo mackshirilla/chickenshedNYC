@@ -1,7 +1,7 @@
 // authenticate user on page load
 import { authenticate } from './utils/requests/auth/authenticateUser';
 authenticate();
-console.log('authenticated');
+//console.log('authenticated');
 
 //import getStudentProfile function
 import { getStudentProfile } from './utils/requests/studentRequests';

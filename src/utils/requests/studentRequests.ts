@@ -1,4 +1,5 @@
-// ----------------------------------------- GUARDIAN ACCOUNT REQUESTS -------------------------------------------------------------
+// ----------------------------------------- FROM GUARDIAN ACCOUNT REQUESTS -------------------------------------------------------------
+
 //addStudentPageLoad - From Guardian Account
 export async function addStudentOnLoad() {
   try {
@@ -38,6 +39,13 @@ export async function getStudentProfiles() {
   const profileString = localStorage.getItem('profile');
   const profile = profileString ? JSON.parse(profileString) : null;
   const guardianUserID = profile ? profile.userID : null;
+  interface StudentProfile {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    image: { url: string };
+  }
 
   if (!guardianUserID) {
     // Handle the case when userID is not found in localStorage
@@ -63,7 +71,7 @@ export async function getStudentProfiles() {
       const responseData = await response.json();
       alert(responseData.message || 'An error occurred');
     } else {
-      const responseData: { allStudentProfiles: any[] } = await response.json();
+      const responseData: { allStudentProfiles: StudentProfile[] } = await response.json();
       if (responseData.allStudentProfiles.length > 0) {
         const studentList = document.getElementById('studentList') as HTMLDivElement;
         const studentCardTemplate = document.getElementById('studentCard') as HTMLDivElement;
@@ -196,11 +204,15 @@ export async function updateStudentProfile() {
     console.error(error);
   }
 }
-// ----------------------------------------- GUARDIAN ACCOUNT REQUESTS -------------------------------------------------------------
 
-//----------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------------
 
-// ----------------------------------------- STUDENT ACCOUNT REQUESTS --------------------------------------------------------------
+// ----------------------------------------- FROM STUDENT ACCOUNT REQUESTS --------------------------------------------------------------
+
 // get student profile - from student account
 export async function getStudentProfile() {
   const profileString = localStorage.getItem('profile');

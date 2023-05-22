@@ -1,5 +1,6 @@
 // authenticate user on page load
 import { authenticate } from './utils/requests/auth/authenticateUser';
+
 //run authenticate function
 authenticate();
 //console.log('authenticated');
@@ -34,10 +35,10 @@ yMember.addEventListener('change', () => {
   }
 });
 
-//import updateGuardianProfile function
+//import finishGuardianAccoutSetup function
 import { finishGuardianAccountSetup } from './utils/requests/guardianRequests';
 
-// prevent form submit button from submitting form if any input is invalid
+// prevent form submit button from submitting if any input is invalid
 const submitButton = document.getElementById('submitButton') as HTMLButtonElement;
 submitButton.addEventListener('click', (e) => {
   if (!validatePhone()) {
