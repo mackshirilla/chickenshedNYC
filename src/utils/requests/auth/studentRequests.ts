@@ -1,5 +1,3 @@
-// ----------------------------------------- FROM GUARDIAN ACCOUNT REQUESTS -------------------------------------------------------------
-
 //addStudentPageLoad - From Guardian Account
 export async function addStudentOnLoad() {
   try {
@@ -34,18 +32,11 @@ export async function addStudentOnLoad() {
   }
 }
 
-// get all Student Profiles FOR CARDS From Guardian Account
+// get all Student Profiles From Guardian Account
 export async function getStudentProfiles() {
   const profileString = localStorage.getItem('profile');
   const profile = profileString ? JSON.parse(profileString) : null;
   const guardianUserID = profile ? profile.userID : null;
-  interface StudentProfile {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    image: { url: string };
-  }
 
   if (!guardianUserID) {
     // Handle the case when userID is not found in localStorage
@@ -71,7 +62,7 @@ export async function getStudentProfiles() {
       const responseData = await response.json();
       alert(responseData.message || 'An error occurred');
     } else {
-      const responseData: { allStudentProfiles: StudentProfile[] } = await response.json();
+      const responseData: { allStudentProfiles: any[] } = await response.json();
       if (responseData.allStudentProfiles.length > 0) {
         const studentList = document.getElementById('studentList') as HTMLDivElement;
         const studentCardTemplate = document.getElementById('studentCard') as HTMLDivElement;
@@ -205,14 +196,6 @@ export async function updateStudentProfile() {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------------------------------------------
-
-// ----------------------------------------- FROM STUDENT ACCOUNT REQUESTS --------------------------------------------------------------
-
 // get student profile - from student account
 export async function getStudentProfile() {
   const profileString = localStorage.getItem('profile');
@@ -246,66 +229,11 @@ export async function getStudentProfile() {
       //save studentID to localStorage
       const responseData = await response.json();
       localStorage.setItem('studentID', responseData.id);
+      window.location.href = '/my-account/setup-complete';
     }
   } catch (error) {
     console.error(error);
   } finally {
     loadingAnimation.style.display = 'none';
-  }
-}
-
-// Finish Student Profile - From Student account
-export async function finishStudentProfile() {
-  const studentId = localStorage.getItem('studentID');
-
-  const profileString = localStorage.getItem('profile');
-  if (!profileString || !studentId) {
-    // Handle the case when studentId or profile is not found in localStorage
-    return;
-  }
-
-  const loadingAnimation = document.getElementById('loadingAnimation') as HTMLDivElement;
-  loadingAnimation.style.display = 'block';
-
-  const studentInfo = {
-    phone: (document.getElementById('phoneInput') as HTMLInputElement).value,
-    dob: (document.getElementById('dobInput') as HTMLInputElement).value,
-    grade: (document.getElementById('gradeInput') as HTMLInputElement).value,
-    school: (document.getElementById('schoolInput') as HTMLInputElement).value,
-    info: (document.getElementById('infoInput') as HTMLInputElement).value,
-    sendTexts: (document.getElementById('sendTexts') as HTMLInputElement).checked,
-    studentID: studentId,
-  };
-
-  try {
-    const response = await fetch(
-      `https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/student_profiles/${studentId}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(studentInfo),
-      }
-    );
-
-    if (!response.ok) {
-      const responseData = await response.json();
-      const submitError = document.getElementById('submitError') as HTMLDivElement;
-      // Show the error message
-      submitError.style.display = 'block';
-      loadingAnimation.style.display = 'none';
-      submitError.textContent = responseData.message || 'An error occurred';
-    } else {
-      // hide error message
-      const submitError = document.getElementById('submitError') as HTMLDivElement;
-      submitError.style.display = 'none';
-      // delete studentID from localStorage
-      localStorage.removeItem('studentID');
-      // navigate to setup-complete
-      window.location.href = '/my-account/setup-complete';
-    }
-  } catch (error) {
-    console.error(error);
   }
 }

@@ -25,6 +25,18 @@ if (dobInput) dobInput.addEventListener('input', validateDOB);
 //import finish student profile function
 import { finishStudentProfile } from './utils/requests/studentRequests';
 
+//change sendTexts toggle text to 'Yes' or 'No' depending on if it is checked
+const sendTexts = document.getElementById('sendTexts') as HTMLInputElement;
+sendTexts.addEventListener('change', () => {
+  //get .toggle-text element by class
+  const toggleText = document.getElementsByClassName('toggle-text')[0] as HTMLSpanElement;
+  if (sendTexts.checked) {
+    toggleText.textContent = 'Yes';
+  } else {
+    toggleText.textContent = 'No';
+  }
+});
+
 // prevent form submit button from submitting form if any input is invalid
 const submitButton = document.getElementById('submitButton') as HTMLButtonElement;
 submitButton.addEventListener('click', (e) => {

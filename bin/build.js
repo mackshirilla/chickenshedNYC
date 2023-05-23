@@ -13,6 +13,7 @@ const ENTRY_POINTS = [
   'src/finishAccountDetails.ts',
   'src/finishStudentAccount.ts',
   'src/userLogin.ts',
+  'src/registration.ts',
   'src/utils/requests/auth/magicLink.ts',
 ];
 

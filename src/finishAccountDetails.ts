@@ -35,6 +35,28 @@ yMember.addEventListener('change', () => {
   }
 });
 
+//toggle recieve text messages text
+const sendTexts = document.getElementById('sendTexts') as HTMLInputElement;
+sendTexts.addEventListener('change', () => {
+  //get .toggle-text element by id textsToggleText
+  const toggleText = document.getElementById('textsToggleText') as HTMLSpanElement;
+  if (sendTexts.checked) {
+    toggleText.textContent = 'Yes';
+  } else {
+    toggleText.textContent = 'No';
+  }
+});
+//toggle yMember text
+yMember.addEventListener('change', () => {
+  //get .toggle-text element by id yMemberToggleText
+  const toggleText = document.getElementById('yMemberToggleText') as HTMLSpanElement;
+  if (yMember.checked) {
+    toggleText.textContent = 'Yes';
+  } else {
+    toggleText.textContent = 'No';
+  }
+});
+
 //import finishGuardianAccoutSetup function
 import { finishGuardianAccountSetup } from './utils/requests/guardianRequests';
 

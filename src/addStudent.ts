@@ -42,6 +42,18 @@ if (phoneInput) phoneInput.addEventListener('input', validatePhone);
 const dobInput = document.getElementById('dobInput');
 if (dobInput) dobInput.addEventListener('input', validateDOB);
 
+//change sendTexts toggle text to 'Yes' or 'No' depending on if it is checked
+const sendTexts = document.getElementById('sendTexts') as HTMLInputElement;
+sendTexts.addEventListener('change', () => {
+  //get .toggle-text element by class
+  const toggleText = document.getElementsByClassName('toggle-text')[0] as HTMLSpanElement;
+  if (sendTexts.checked) {
+    toggleText.textContent = 'Yes';
+  } else {
+    toggleText.textContent = 'No';
+  }
+});
+
 //import updateStudentProfile function
 import { updateStudentProfile } from './utils/requests/studentRequests';
 
