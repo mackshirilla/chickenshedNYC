@@ -300,10 +300,12 @@ export async function finishStudentProfile() {
       // hide error message
       const submitError = document.getElementById('submitError') as HTMLDivElement;
       submitError.style.display = 'none';
-      // delete studentID from localStorage
-      localStorage.removeItem('studentID');
+      // save profile to localStorage
+      const responseData = await response.json();
+      localStorage.setItem('profile', JSON.stringify(responseData.studentProfile));
+
       // navigate to setup-complete
-      window.location.href = '/my-account/setup-complete';
+      window.location.href = '/create-account/setup-complete';
     }
   } catch (error) {
     console.error(error);

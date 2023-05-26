@@ -15,6 +15,7 @@ const ENTRY_POINTS = [
   'src/userLogin.ts',
   'src/registration.ts',
   'src/utils/requests/auth/magicLink.ts',
+  'src/cart.ts',
 ];
 
 // Config dev serving
