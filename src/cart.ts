@@ -40,6 +40,11 @@ async function fetchCartItems(): Promise<unknown[]> {
     if (data.length === 0) {
       if (noItemsDiv) {
         noItemsDiv.style.display = 'flex'; // Show the "noItems" div if there are no items returned
+        // hide the submitButton
+        const submitButton = document.getElementById('submitButton') as HTMLButtonElement | null;
+        if (submitButton) {
+          submitButton.style.display = 'none';
+        }
       }
     }
 
