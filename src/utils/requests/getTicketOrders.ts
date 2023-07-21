@@ -55,7 +55,7 @@ export function getTicketOrder() {
     .then((response) => response.json() as Promise<TicketOrdersResponse>)
     .then((data) => {
       // Handle the response data
-      console.log('Response:', data);
+      //console.log('Response:', data);
 
       // Check if 'result' exists in the response data
       if (!data.response || !data.response.result || !data.response.result.records) {
