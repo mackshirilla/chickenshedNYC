@@ -137,3 +137,199 @@ export function validateDOB() {
 if (dobInput) {
   dobInput.addEventListener('blur', validateDOB);
 }
+
+//validate gender
+const genderInput = document.getElementById('genderInput') as HTMLInputElement;
+const genderError = document.getElementById('genderError') as HTMLDivElement;
+
+export function validateGender() {
+  if (genderInput.hasAttribute('required') && genderInput.value.trim() === '') {
+    genderError.textContent = 'Gender is required';
+    genderError.style.display = 'block';
+    genderInput.classList.add('error');
+    return false;
+  }
+  genderError.textContent = '';
+  genderError.style.display = 'none';
+  genderInput.classList.remove('error');
+  return true;
+}
+
+if (genderInput) {
+  genderInput.addEventListener('blur', validateGender);
+}
+
+// validate school name
+const schoolInput = document.getElementById('schoolInput') as HTMLInputElement;
+const schoolError = document.getElementById('schoolError') as HTMLDivElement;
+
+export function validateSchool() {
+  if (schoolInput.hasAttribute('required') && schoolInput.value.trim() === '') {
+    schoolError.textContent = 'School name is required';
+    schoolError.style.display = 'block';
+    schoolInput.classList.add('error');
+    return false;
+  }
+  schoolError.textContent = '';
+  schoolError.style.display = 'none';
+  schoolInput.classList.remove('error');
+  return true;
+}
+
+if (schoolInput) {
+  schoolInput.addEventListener('blur', validateSchool);
+}
+
+// validate grade
+const gradeInput = document.getElementById('gradeInput') as HTMLInputElement;
+const gradeError = document.getElementById('gradeError') as HTMLDivElement;
+
+export function validateGrade() {
+  if (gradeInput.hasAttribute('required') && gradeInput.value.trim() === 'N/A') {
+    gradeError.textContent = 'Grade is required';
+    gradeError.style.display = 'block';
+    gradeInput.classList.add('error');
+    return false;
+  }
+  gradeError.textContent = '';
+  gradeError.style.display = 'none';
+  gradeInput.classList.remove('error');
+  return true;
+}
+
+if (gradeInput) {
+  gradeInput.addEventListener('blur', validateGrade);
+}
+
+// validate ethnicity
+const ethnicityInput = document.getElementById('ethnicityInput') as HTMLInputElement;
+const ethnicityError = document.getElementById('ethnicityError') as HTMLDivElement;
+
+export function validateEthnicity() {
+  if (ethnicityInput.hasAttribute('required') && ethnicityInput.value.trim() === '') {
+    ethnicityError.textContent = 'Ethnicity is required';
+    ethnicityError.style.display = 'block';
+    ethnicityInput.classList.add('error');
+    return false;
+  }
+  ethnicityError.textContent = '';
+  ethnicityError.style.display = 'none';
+  ethnicityError.classList.remove('error');
+  return true;
+}
+
+if (ethnicityError) {
+  ethnicityInput.addEventListener('blur', validateEthnicity);
+}
+
+// validate health input
+const healthInput = document.getElementById('healthInput') as HTMLInputElement;
+const healthError = document.getElementById('healthError') as HTMLDivElement;
+
+export function validateHealth() {
+  if (healthInput.hasAttribute('required') && healthInput.value.trim() === '') {
+    healthError.textContent = 'This field is required';
+    healthError.style.display = 'block';
+    healthInput.classList.add('error');
+    return false;
+  }
+  healthError.textContent = '';
+  healthError.style.display = 'none';
+  healthInput.classList.remove('error');
+  return true;
+}
+
+if (healthInput) {
+  healthInput.addEventListener('blur', validateHealth);
+}
+
+// validate emergency contact
+const emergencyInput = document.getElementById('emergencyContact') as HTMLInputElement;
+const emergencyError = document.getElementById('emergencyError') as HTMLDivElement;
+
+export function validateEmergency() {
+  if (emergencyInput.hasAttribute('required') && emergencyInput.value.trim() === '') {
+    emergencyError.textContent = 'This field is required';
+    emergencyError.style.display = 'block';
+    emergencyInput.classList.add('error');
+    return false;
+  }
+  emergencyError.textContent = '';
+  emergencyError.style.display = 'none';
+  emergencyInput.classList.remove('error');
+  return true;
+}
+
+if (emergencyInput) {
+  emergencyInput.addEventListener('blur', validateEmergency);
+}
+
+// validate dismissal
+const dismissal = document.getElementById('dismissal') as HTMLInputElement;
+const dismissalError = document.getElementById('dismissalError') as HTMLDivElement;
+
+export function validateDismissal() {
+  if (dismissal.hasAttribute('required') && dismissal.value.trim() === '') {
+    dismissalError.textContent = 'This field is required';
+    dismissalError.style.display = 'block';
+    dismissal.classList.add('error');
+    return false;
+  }
+  dismissalError.textContent = '';
+  dismissalError.style.display = 'none';
+  dismissal.classList.remove('error');
+  return true;
+}
+
+if (dismissal) {
+  dismissal.addEventListener('blur', validateDismissal);
+}
+
+// Validate Additional Email
+const additionalEmail = document.getElementById('additionalEmail') as HTMLInputElement;
+const additionalEmailError = document.getElementById('additionalEmailError') as HTMLDivElement;
+
+export function validateAdditionalEmail() {
+  const additionalEmailRegex = /^\S+@\S+\.\S+$/;
+  if (additionalEmail.hasAttribute('required') && additionalEmail.value.trim() === '') {
+    additionalEmailError.textContent = 'Email is required';
+    additionalEmailError.style.display = 'block';
+    additionalEmail.classList.add('error');
+    return false;
+  }
+  if (additionalEmail.value.trim() !== '' && !additionalEmailRegex.test(additionalEmail.value)) {
+    additionalEmailError.textContent = 'Please enter a valid email';
+    additionalEmailError.style.display = 'block';
+    additionalEmail.classList.add('error');
+    return false;
+  }
+  additionalEmailError.textContent = '';
+  additionalEmailError.style.display = 'none';
+  additionalEmail.classList.remove('error');
+  return true;
+}
+
+if (additionalEmail) {
+  additionalEmail.addEventListener('blur', validateAdditionalEmail);
+}
+
+// Validate interestInput
+const interestInput = document.getElementById('interestInput') as HTMLInputElement;
+const interestError = document.getElementById('interestError') as HTMLDivElement;
+
+export function validateInterest() {
+  if (interestInput.hasAttribute('required') && interestInput.value.trim() === '') {
+    interestError.textContent = 'This field is required';
+    interestError.style.display = 'block';
+    interestInput.classList.add('error');
+    return false;
+  }
+  interestError.textContent = '';
+  interestError.style.display = 'none';
+  interestInput.classList.remove('error');
+  return true;
+}
+
+if (interestInput) {
+  interestInput.addEventListener('blur', validateInterest);
+}

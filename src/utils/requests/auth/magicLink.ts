@@ -38,7 +38,7 @@ async function magicLink() {
       //store role from response in localStorage
       localStorage.setItem('role', responseData.role);
       //redirect to my-account page
-      window.location.href = '/my-account';
+      window.location.href = '/create-account/step-2';
     }
   } catch (error) {
     // Handle any errors that may occur during the fetch request
