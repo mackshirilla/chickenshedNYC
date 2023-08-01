@@ -47,8 +47,8 @@ export async function createAccount() {
       // Store role to local storage
       localStorage.setItem('role', responseData.role);
       // get local storage profile role
-      const profile = JSON.parse(localStorage.getItem('profile') || '{}');
-      const { role } = profile;
+      //const profile = JSON.parse(localStorage.getItem('profile') || '{}');
+      //const { role } = profile;
       // redirect to correct page based on role
       // if url contains /sessions redirect to /create-account/add-student-profile
       if (window.location.href.includes('/sessions')) {

@@ -31,7 +31,7 @@ async function magicLink() {
     } else {
       //store authToken from response in localStorage
       const responseData = await response.json();
-      console.log(responseData);
+      //console.log(responseData);
       localStorage.setItem('authToken', responseData.authToken);
       //store first item in profile array in localStorage
       localStorage.setItem('profile', JSON.stringify(responseData.profile[0]));
