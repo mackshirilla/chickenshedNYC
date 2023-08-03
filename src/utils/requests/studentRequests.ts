@@ -92,9 +92,8 @@ export async function getStudentProfiles() {
               studentProfile.firstName + ' ' + studentProfile.lastName;
           if (studentEmailElement) studentEmailElement.textContent = studentProfile.email;
           if (studentPhoneElement) studentPhoneElement.textContent = studentProfile.phone;
-          if (studentImageElement && studentProfile.image) {
-            studentImageElement.src = studentProfile.image.url;
-          }
+          if (studentImageElement) studentImageElement.src = studentProfile.image.url;
+
           studentList.append(clonedTemplate);
         });
 
@@ -135,21 +134,10 @@ export async function updateStudentProfile() {
     email: (document.getElementById('emailInput') as HTMLInputElement).value,
     phone: (document.getElementById('phoneInput') as HTMLInputElement).value,
     dob: (document.getElementById('dobInput') as HTMLInputElement).value,
-    gender: (document.getElementById('genderInput') as HTMLInputElement).value,
-    ethnicity: (document.getElementById('ethnicityInput') as HTMLInputElement).value,
-    health: (document.getElementById('healthInput') as HTMLInputElement).value,
-    additionalName: (document.getElementById('additionalName') as HTMLInputElement).value,
-    additionalEmail: (document.getElementById('additionalEmail') as HTMLInputElement).value,
-    additionalPhone: (document.getElementById('additionalPhone') as HTMLInputElement).value,
-    emergencyContact: (document.getElementById('emergencyContact') as HTMLInputElement).value,
-    dismissal: (document.getElementById('dismissal') as HTMLInputElement).value,
-    family: (document.getElementById('family') as HTMLInputElement).value,
     grade: (document.getElementById('gradeInput') as HTMLInputElement).value,
     school: (document.getElementById('schoolInput') as HTMLInputElement).value,
-    //info: (document.getElementById('infoInput') as HTMLInputElement).value,
+    info: (document.getElementById('infoInput') as HTMLInputElement).value,
     sendTexts: (document.getElementById('sendTexts') as HTMLInputElement).checked,
-    photoRelease: (document.getElementById('photoRelease') as HTMLInputElement).checked,
-    independentTravel: (document.getElementById('independentTravel') as HTMLInputElement).checked,
     studentID: studentId,
     guardianUserID: userID, // accountID corresponds to userID in profile object
   };
@@ -214,93 +202,6 @@ export async function updateStudentProfile() {
     }
   } catch (error) {
     console.error(error);
-  }
-}
-
-// Student Dashboard Request
-export async function getStudentsDashboard() {
-  const profileString = localStorage.getItem('profile');
-  const profile = profileString ? JSON.parse(profileString) : null;
-  const guardianUserID = profile ? profile.userID : null;
-
-  interface StudentProfile {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    image: { url: string };
-    airtableID: string;
-  }
-
-  if (!guardianUserID) {
-    // Handle the case when userID is not found in localStorage
-    return;
-  }
-
-  const loadingAnimation = document.getElementById('loadingAnimation') as HTMLDivElement;
-  const studentList = document.getElementById('studentList') as HTMLDivElement;
-  const noStudents = document.getElementById('noStudents') as HTMLDivElement;
-
-  try {
-    loadingAnimation.style.display = 'block';
-
-    const response = await fetch(
-      `https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/student_profiles?guardianUserID=${guardianUserID}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    if (!response.ok) {
-      const responseData = await response.json();
-      alert(responseData.message || 'An error occurred');
-    } else {
-      const responseData: { allStudentProfiles: StudentProfile[] } = await response.json();
-      if (responseData.allStudentProfiles.length > 0) {
-        // Clear the studentList
-        studentList.innerHTML = '';
-
-        const studentCardTemplate = document.getElementById('studentCard') as HTMLAnchorElement;
-
-        // For each student profile, clone the template, fill in the data and append to the list
-        responseData.allStudentProfiles.forEach((studentProfile) => {
-          const clonedTemplate = studentCardTemplate.cloneNode(true) as HTMLAnchorElement;
-          const studentNameElement = clonedTemplate.querySelector('#studentNameList');
-          const studentEmailElement = clonedTemplate.querySelector('#studentEmailList');
-          const studentPhoneElement = clonedTemplate.querySelector('#studentPhoneList');
-          const studentImageElement = clonedTemplate.querySelector(
-            '#studentImageList'
-          ) as HTMLImageElement;
-
-          if (studentNameElement)
-            studentNameElement.textContent =
-              studentProfile.firstName + ' ' + studentProfile.lastName;
-          if (studentEmailElement) studentEmailElement.textContent = studentProfile.email;
-          if (studentPhoneElement) studentPhoneElement.textContent = studentProfile.phone;
-          if (studentImageElement && studentProfile.image) {
-            studentImageElement.src = studentProfile.image.url;
-          }
-          clonedTemplate.href = `/my-account/student-profile?profile=${studentProfile.airtableID}`;
-
-          studentList.append(clonedTemplate);
-        });
-
-        studentCardTemplate.style.display = 'none';
-        studentList.style.display = 'grid';
-        noStudents.style.display = 'none';
-      } else {
-        // If no student profiles found, hide the studentList and display the #noStudents div
-        studentList.style.display = 'none';
-        noStudents.style.display = 'flex';
-      }
-    }
-  } catch (error) {
-    console.error(error);
-  } finally {
-    loadingAnimation.style.display = 'none';
   }
 }
 

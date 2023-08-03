@@ -254,7 +254,7 @@ async function createCheckoutSession(cartItems: any[]) {
   const sessionData = {
     line_items: lineItems,
     mode: 'payment',
-    success_url: 'https://chickenshed.webflow.io/successful-checkout',
+    success_url: 'https://example.com/success',
     cancel_url: window.location.href,
     metadata: metadata,
   };

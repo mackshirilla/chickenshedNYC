@@ -5,15 +5,6 @@ import { authenticate } from './utils/requests/auth/authenticateUser';
 authenticate();
 //console.log('authenticated');
 
-// hide #progressBar if redirectURL is not in localStorage
-const redirectURL = localStorage.getItem('redirectURL');
-const progressBar = document.getElementById('progressBar');
-if (!redirectURL && progressBar) {
-  progressBar.style.display = 'none';
-} else if (progressBar) {
-  progressBar.style.display = 'block';
-}
-
 //remove studentID fom localStorage
 localStorage.removeItem('studentID');
 
