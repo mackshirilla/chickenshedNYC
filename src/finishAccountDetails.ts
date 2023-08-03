@@ -10,7 +10,7 @@ const redirectURL = localStorage.getItem('redirectURL');
 const progressBar = document.getElementById('progressBar');
 if (!redirectURL && progressBar) {
   progressBar.style.display = 'none';
-} else if (redirectURL && progressBar) {
+} else if (progressBar) {
   progressBar.style.display = 'block';
 }
 
