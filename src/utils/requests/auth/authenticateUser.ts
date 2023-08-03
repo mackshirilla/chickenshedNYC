@@ -1,13 +1,6 @@
-//Authenticate User
-export function authenticate() {
+// Authenticate User
+export function authenticate(): Promise<void> {
   const authToken = localStorage.getItem('authToken');
-
-  if (!authToken) {
-    // authToken not found in local storage. Handle this case as you see fit.
-    console.error('authToken not found in local storage.');
-    window.location.href = '/login';
-    return;
-  }
 
   return fetch('https://x8ki-letl-twmt.n7.xano.io/api:WyQO-hFi/auth/me', {
     method: 'GET',
@@ -24,6 +17,21 @@ export function authenticate() {
     })
     .catch((error) => {
       console.error('Error:', error);
-      window.location.href = '/log-in'; // Redirect unauthenticated user
+      // if .page-wrapper has the attribute gated
+      const pageWrapper = document.querySelector('.page-wrapper') as HTMLElement;
+      const isGated = pageWrapper && pageWrapper.hasAttribute('gatedContent');
+
+      if (isGated) {
+        // redirect to login page
+        window.location.href = '/login';
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('profile');
+        localStorage.removeItem('role');
+      } else {
+        // remove authToken, profile, and role from localStorage
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('profile');
+        localStorage.removeItem('role');
+      }
     });
 }

@@ -31,14 +31,14 @@ async function magicLink() {
     } else {
       //store authToken from response in localStorage
       const responseData = await response.json();
-      //console.log(responseData);
+      console.log(responseData);
       localStorage.setItem('authToken', responseData.authToken);
       //store first item in profile array in localStorage
       localStorage.setItem('profile', JSON.stringify(responseData.profile[0]));
       //store role from response in localStorage
       localStorage.setItem('role', responseData.role);
       //redirect to my-account page
-      window.location.href = '/my-account';
+      window.location.href = '/create-account/step-2';
     }
   } catch (error) {
     // Handle any errors that may occur during the fetch request

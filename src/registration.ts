@@ -163,6 +163,9 @@ function handleRadioButtons(): void {
   });
 }
 
+//import validateInterest
+import { validateInterest } from './utils/forms/inputValidation';
+
 // Function to handle the form submission
 function handleFormSubmit(): void {
   // Get elements for submit button and error messages
@@ -206,6 +209,21 @@ function handleFormSubmit(): void {
         errorFlag = true;
       }
 
+      //validate interest
+      const interest = document.getElementById('interestInput') as HTMLInputElement;
+      const interestError = document.getElementById('interestError');
+      const interestValue = interest.value;
+      const interestValid = validateInterest(interestValue);
+      if (!interestValid) {
+        if (interestError) {
+          interestError.style.display = 'block';
+          interestError.innerText = 'This field is required';
+        } else {
+          interestError.style.display = 'none';
+        }
+        errorFlag = true;
+      }
+
       // If any error was encountered, prevent form submission and show the submit error
       if (errorFlag) {
         if (submitError) submitError.style.display = 'block';
@@ -226,6 +244,8 @@ function handleFormSubmit(): void {
       const finPlanCheckbox = document.getElementById('finPlan') as HTMLInputElement;
 
       // Fetch hidden input values
+      const contactListIDInput = document.getElementById('contactListID') as HTMLInputElement;
+      const sessionIDInput = document.getElementById('sessionID') as HTMLInputElement;
       const followUpEmailInput = document.getElementById('followUpEmailID') as HTMLInputElement;
       const colorInput = document.getElementById('color') as HTMLInputElement;
       const imageURLInput = document.getElementById('imageURL') as HTMLInputElement;
@@ -234,6 +254,8 @@ function handleFormSubmit(): void {
       const sessionTimeInput = document.getElementById('sessionTime') as HTMLInputElement;
       const sessionDayInput = document.getElementById('sessionDay') as HTMLInputElement;
       const depositOnlyInput = document.getElementById('depositOnly') as HTMLInputElement;
+      const startDateInput = document.getElementById('startDate') as HTMLInputElement;
+      const endDateInput = document.getElementById('endDate') as HTMLInputElement;
 
       // Fetch the selected radio button for payment type
       const paymentTypeRadioButtons = document.querySelectorAll(
@@ -259,7 +281,16 @@ function handleFormSubmit(): void {
       const finPlan = finPlanCheckbox ? finPlanCheckbox.checked : false;
       const depositOnly = depositOnlyInput ? depositOnlyInput.value : 'false';
       const emailFollowUpID = followUpEmailInput ? followUpEmailInput.value : '';
+      const sessionID = sessionIDInput ? sessionIDInput.value : '';
+      const contactListID = contactListIDInput ? contactListIDInput.value : '';
+      const startDate = startDateInput ? startDateInput.value : '';
+      const endDate = endDateInput ? endDateInput.value : '';
 
+      //remove any empty strings from the contactListID array
+      const contactLists = contactListID
+        .split(',')
+        .map((item) => item.trim())
+        .filter((item) => item);
       // Show the request loading animation
       if (requestLoadingAnimation) requestLoadingAnimation.style.display = 'block';
 
@@ -289,6 +320,10 @@ function handleFormSubmit(): void {
             depositOnly,
             quantity: studentsSelected.length,
             emailFollowUpID,
+            sessionID,
+            contactLists,
+            startDate,
+            endDate,
           }),
         });
 
@@ -310,6 +345,133 @@ function handleFormSubmit(): void {
 
         // Display the submit error message
         if (submitError) submitError.style.display = 'block';
+      }
+    });
+  }
+}
+
+// Function to handle the Free form submission
+function handleFreeFormSubmit(): void {
+  const freeSubmitButton = document.getElementById('freeSubmitButton');
+  const studentListError = document.getElementById('studentListError');
+  const submitError = document.getElementById('submitError');
+  const freeRequestLoadingAnimation = document.getElementById('freeRequestLoadingAnimation');
+
+  if (freeSubmitButton) {
+    freeSubmitButton.addEventListener('click', async (event) => {
+      event.preventDefault();
+
+      let errorFlag = false;
+
+      if (studentListError) {
+        studentListError.style.display = 'none';
+      }
+      if (submitError) {
+        submitError.style.display = 'none';
+      }
+
+      if (studentsSelected.length === 0) {
+        if (studentListError) {
+          studentListError.style.display = 'block';
+          studentListError.innerText = 'This field is required';
+        }
+        errorFlag = true;
+      }
+
+      if (errorFlag) {
+        if (submitError) {
+          submitError.style.display = 'block';
+          submitError.innerText = 'Please make sure all required fields are filled';
+        }
+        return;
+      }
+
+      const profileString = localStorage.getItem('profile');
+      const profile = profileString ? JSON.parse(profileString) : null;
+      const userID = profile?.userID;
+      const firstName = profile?.firstName;
+      const lastName = profile?.lastName;
+
+      const contactListIDInput = document.getElementById('contactListID') as HTMLInputElement;
+      const sessionIDInput = document.getElementById('sessionID') as HTMLInputElement;
+      const followUpEmailInput = document.getElementById('followUpEmailID') as HTMLInputElement;
+      const colorInput = document.getElementById('color') as HTMLInputElement;
+      const imageURLInput = document.getElementById('imageURL') as HTMLInputElement;
+      const programInput = document.getElementById('program') as HTMLInputElement;
+      const workshopInput = document.getElementById('workshop') as HTMLInputElement;
+      const sessionTimeInput = document.getElementById('sessionTime') as HTMLInputElement;
+      const sessionDayInput = document.getElementById('sessionDay') as HTMLInputElement;
+      const startDateInput = document.getElementById('startDate') as HTMLInputElement;
+      const endDateInput = document.getElementById('endDate') as HTMLInputElement;
+
+      const studentIDs = studentsSelected.map((student) => student.id);
+      const studentNames = studentsSelected.map(
+        (student) => `${student.firstName} ${student.lastName}`
+      );
+      const color = colorInput ? colorInput.value : '';
+      const imageURL = imageURLInput ? imageURLInput.value : '';
+      const program = programInput ? programInput.value : '';
+      const workshop = workshopInput ? workshopInput.value : '';
+      const sessionTime = sessionTimeInput ? sessionTimeInput.value : '';
+      const sessionDay = sessionDayInput ? sessionDayInput.value : '';
+      const emailFollowUpID = followUpEmailInput ? followUpEmailInput.value : '';
+      const sessionID = sessionIDInput ? sessionIDInput.value : '';
+      const contactListID = contactListIDInput ? contactListIDInput.value : '';
+      const startDate = startDateInput ? startDateInput.value : '';
+      const endDate = endDateInput ? endDateInput.value : '';
+
+      const contactLists = contactListID
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean);
+
+      if (freeRequestLoadingAnimation) {
+        freeRequestLoadingAnimation.style.display = 'block';
+      }
+
+      try {
+        const response = await fetch(
+          'https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/FREE_REGISTRATION',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userID,
+              firstName,
+              lastName,
+              studentIDs,
+              studentNames,
+              color,
+              imageURL,
+              program,
+              workshop,
+              sessionTime,
+              sessionDay,
+              emailFollowUpID,
+              sessionID,
+              contactLists,
+              startDate,
+              endDate,
+            }),
+          }
+        );
+
+        if (response.ok) {
+          window.location.href = '/successful-checkout';
+        } else {
+          throw new Error('An error occurred while submitting the form');
+        }
+      } catch (error) {
+        console.error(error);
+        if (submitError) {
+          submitError.style.display = 'block';
+        }
+      } finally {
+        if (freeRequestLoadingAnimation) {
+          freeRequestLoadingAnimation.style.display = 'none';
+        }
       }
     });
   }
@@ -384,6 +546,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   handleRadioButtons();
   handleFormSubmit();
+  handleFreeFormSubmit();
 
   //if finAid is checked change #finAidText to 'Yes'
   const finAidText = document.getElementById('finAidText');
@@ -409,3 +572,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
+//if the button with id 'addStudent' is clicked set redirectURL in localStorage and redirect to current page
+const addStudentButton = document.getElementById('addStudent');
+if (addStudentButton) {
+  addStudentButton.addEventListener('click', () => {
+    localStorage.setItem('redirectURL', window.location.href);
+    window.location.href = '/create-account/add-student';
+  });
+}
