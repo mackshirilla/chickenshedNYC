@@ -11,7 +11,6 @@ const ENTRY_POINTS = [
   'src/createAccount.ts',
   'src/addStudent.ts',
   'src/finishAccountDetails.ts',
-  'src/finishStudentAccount.ts',
   'src/userLogin.ts',
   'src/registration.ts',
   'src/utils/requests/auth/magicLink.ts',
@@ -20,6 +19,8 @@ const ENTRY_POINTS = [
   'src/donation.ts',
   'src/ticketOrder.ts',
   'src/my-account.ts',
+  'src/studentProfile.ts',
+  'src/studentDashboard.ts',
 ];
 
 // Config dev serving

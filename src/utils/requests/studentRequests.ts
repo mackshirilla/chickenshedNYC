@@ -1,5 +1,3 @@
-// ----------------------------------------- FROM GUARDIAN ACCOUNT REQUESTS -------------------------------------------------------------
-
 //addStudentPageLoad - From Guardian Account
 export async function addStudentOnLoad() {
   try {
@@ -283,7 +281,9 @@ export async function getStudentsDashboard() {
           if (studentImageElement && studentProfile.image) {
             studentImageElement.src = studentProfile.image.url;
           }
-          clonedTemplate.href = `/my-account/student-profile?profile=${studentProfile.airtableID}`;
+
+          // Update the link's href attribute with the student's airtableID
+          clonedTemplate.href = `/my-account/student-profile?student=${studentProfile.airtableID}`;
 
           studentList.append(clonedTemplate);
         });
@@ -301,112 +301,5 @@ export async function getStudentsDashboard() {
     console.error(error);
   } finally {
     loadingAnimation.style.display = 'none';
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------------------------------------------
-
-// ----------------------------------------- FROM STUDENT ACCOUNT REQUESTS --------------------------------------------------------------
-
-// get student profile - from student account
-export async function getStudentProfile() {
-  const profileString = localStorage.getItem('profile');
-  const profile = profileString ? JSON.parse(profileString) : null;
-  const studentID = profile ? profile.id : null;
-
-  if (!studentID) {
-    // Handle the case when userID is not found in localStorage
-    return;
-  }
-
-  const loadingAnimation = document.getElementById('loadingAnimation') as HTMLDivElement;
-
-  try {
-    loadingAnimation.style.display = 'block';
-
-    const response = await fetch(
-      `https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/student_profiles/${studentID}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    if (!response.ok) {
-      const responseData = await response.json();
-      alert(responseData.message || 'An error occurred');
-    } else {
-      //save studentID to localStorage
-      const responseData = await response.json();
-      localStorage.setItem('studentID', responseData.id);
-    }
-  } catch (error) {
-    console.error(error);
-  } finally {
-    loadingAnimation.style.display = 'none';
-  }
-}
-
-// Finish Student Profile - From Student account
-export async function finishStudentProfile() {
-  const studentId = localStorage.getItem('studentID');
-
-  const profileString = localStorage.getItem('profile');
-  if (!profileString || !studentId) {
-    // Handle the case when studentId or profile is not found in localStorage
-    return;
-  }
-
-  const loadingAnimation = document.getElementById('loadingAnimation') as HTMLDivElement;
-  loadingAnimation.style.display = 'block';
-
-  const studentInfo = {
-    phone: (document.getElementById('phoneInput') as HTMLInputElement).value,
-    dob: (document.getElementById('dobInput') as HTMLInputElement).value,
-    grade: (document.getElementById('gradeInput') as HTMLInputElement).value,
-    school: (document.getElementById('schoolInput') as HTMLInputElement).value,
-    info: (document.getElementById('infoInput') as HTMLInputElement).value,
-    sendTexts: (document.getElementById('sendTexts') as HTMLInputElement).checked,
-    studentID: studentId,
-  };
-
-  try {
-    const response = await fetch(
-      `https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/student_profiles/${studentId}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(studentInfo),
-      }
-    );
-
-    if (!response.ok) {
-      const responseData = await response.json();
-      const submitError = document.getElementById('submitError') as HTMLDivElement;
-      // Show the error message
-      submitError.style.display = 'block';
-      loadingAnimation.style.display = 'none';
-      submitError.textContent = responseData.message || 'An error occurred';
-    } else {
-      // hide error message
-      const submitError = document.getElementById('submitError') as HTMLDivElement;
-      submitError.style.display = 'none';
-      // save profile to localStorage
-      const responseData = await response.json();
-      localStorage.setItem('profile', JSON.stringify(responseData.studentProfile));
-
-      // navigate to setup-complete
-      window.location.href = '/create-account/setup-complete';
-    }
-  } catch (error) {
-    console.error(error);
   }
 }

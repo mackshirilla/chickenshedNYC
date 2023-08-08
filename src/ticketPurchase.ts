@@ -11,6 +11,7 @@ interface FormInputData {
   userID: string;
   sendGridFollowUpID: string;
   sendGridContactList: string;
+  childrenAttending: string;
 }
 
 interface LineItem {
@@ -51,6 +52,7 @@ function handleFormSubmit(event: Event) {
     userID: '',
     sendGridFollowUpID: (document.getElementById('sendGridFollowUpID') as HTMLInputElement).value,
     sendGridContactList: (document.getElementById('sendGridContactList') as HTMLInputElement).value,
+    childrenAttending: (document.getElementById('childrenAttending') as HTMLInputElement).value,
   };
 
   // Retrieve profile data from local storage if available
@@ -87,15 +89,6 @@ function handleFormSubmit(event: Event) {
       return;
     }
     errorMessage.style.display = 'none';
-  }
-
-  const messageWrapper = document.getElementById('messageWrapper');
-  if (messageWrapper) {
-    if (toggleSwitch.checked) {
-      messageWrapper.style.height = '12rem';
-    } else {
-      messageWrapper.style.height = '';
-    }
   }
 
   const loadingWrapper = document.getElementById('loadingWrapper');
@@ -146,6 +139,13 @@ function handleFormSubmit(event: Event) {
 }
 
 function handleToggleSwitchChange() {
+  const toggleText = document.querySelector('.toggle-text');
+  if (toggleSwitch.checked) {
+    toggleText.textContent = 'Yes';
+  } else {
+    toggleText.textContent = 'No';
+  }
+
   const messageWrapper = document.getElementById('messageWrapper');
   if (messageWrapper) {
     if (toggleSwitch.checked) {

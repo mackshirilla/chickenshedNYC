@@ -152,3 +152,20 @@ submitButton.addEventListener('click', (e) => {
     updateStudentProfile();
   }
 });
+
+//when a user clicks the button with the id of studentContinue check if redirectURL is set in localStorage
+//if redirectURL is set and the profile object in local storage contains phoneNumber that is not null redirect to redirectURL
+//if redirectURL is not set or the profile object in local storage does not contain phoneNumber that is not null redirect to /create-account/account-details
+const studentContinue = document.getElementById('studentContinue') as HTMLButtonElement;
+studentContinue.addEventListener('click', () => {
+  if (localStorage.getItem('redirectURL')) {
+    const profile = JSON.parse(localStorage.getItem('profile') as string);
+    if (profile.phoneNumber) {
+      window.location.href = localStorage.getItem('redirectURL') as string;
+    } else {
+      window.location.href = '/create-account/account-details';
+    }
+  } else {
+    window.location.href = '/create-account/account-details';
+  }
+});

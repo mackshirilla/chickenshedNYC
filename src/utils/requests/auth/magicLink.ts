@@ -37,8 +37,14 @@ async function magicLink() {
       localStorage.setItem('profile', JSON.stringify(responseData.profile[0]));
       //store role from response in localStorage
       localStorage.setItem('role', responseData.role);
-      //redirect to my-account page
-      window.location.href = '/create-account/step-2';
+      //redirect to step-2 page
+      //window.location.href = '/create-account/step-2';
+      // if role is guardian redirect to /create-account/step-2 page, else redirect to /student-dashboard
+      if (responseData.role === 'guardian') {
+        window.location.href = '/create-account/step-2';
+      } else {
+        window.location.href = '/student-dashboard';
+      }
     }
   } catch (error) {
     // Handle any errors that may occur during the fetch request

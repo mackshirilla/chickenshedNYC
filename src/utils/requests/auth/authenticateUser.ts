@@ -2,6 +2,12 @@
 export function authenticate(): Promise<void> {
   const authToken = localStorage.getItem('authToken');
 
+  //if no authToken, redirect to login page
+  if (!authToken) {
+    window.location.href = '/login';
+    return Promise.reject();
+  }
+
   return fetch('https://x8ki-letl-twmt.n7.xano.io/api:WyQO-hFi/auth/me', {
     method: 'GET',
     headers: {
@@ -24,11 +30,6 @@ export function authenticate(): Promise<void> {
       if (isGated) {
         // redirect to login page
         window.location.href = '/login';
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('profile');
-        localStorage.removeItem('role');
-      } else {
-        // remove authToken, profile, and role from localStorage
         localStorage.removeItem('authToken');
         localStorage.removeItem('profile');
         localStorage.removeItem('role');

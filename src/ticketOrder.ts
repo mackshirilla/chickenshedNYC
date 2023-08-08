@@ -134,8 +134,11 @@ if (orderNumber !== null) {
 
 // Function to format the date in a friendly format
 function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  // Adjust the date using the time zone offset to display the correct date in the user's local time
+  const adjustedDate = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
   const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-  return new Date(dateString).toLocaleDateString(undefined, options);
+  return adjustedDate.toLocaleDateString(undefined, options);
 }
 
 // Function to format the unit amount as currency

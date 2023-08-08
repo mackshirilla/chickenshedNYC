@@ -37,58 +37,55 @@ async function fetchStudentProfiles(guardianUserID: string): Promise<StudentProf
 
 // Function to handle the display and interaction of student profiles
 async function handleStudentProfiles(): Promise<void> {
-  // Get user profile from localStorage
   const profileString = localStorage.getItem('profile');
   const profile = profileString ? JSON.parse(profileString) : null;
   const guardianUserID = profile?.userID;
+  const userRole = profile?.role;
 
-  // Get loading animation and error message elements
   const loadingAnimation = document.getElementById('loadingAnimation') as HTMLDivElement;
   const registrationFormWrapper = document.getElementById(
     'registrationFormWrapper'
   ) as HTMLDivElement;
   const noStudentProfiles = document.getElementById('NoStudentProfiles') as HTMLDivElement;
+  const studentAccount = document.getElementById('studentAccount') as HTMLDivElement;
 
-  // Hide the registration form and show loading animation
   registrationFormWrapper.style.display = 'none';
+  studentAccount.style.display = 'none';
   noStudentProfiles.style.display = 'none';
   loadingAnimation.style.display = 'block';
 
-  // Try to fetch student profiles from server
+  if (userRole === 'student') {
+    studentAccount.style.display = 'block';
+    registrationFormWrapper.style.display = 'none';
+  } else {
+    studentAccount.style.display = 'none';
+    registrationFormWrapper.style.display = 'block';
+  }
+
   try {
     const allStudentProfiles = await fetchStudentProfiles(guardianUserID);
 
-    // If student profiles are returned, populate student list
     if (allStudentProfiles.length > 0) {
       const studentList = document.getElementById('studentList') as HTMLDivElement;
       const studentCardTemplate = document.getElementById('studentItem') as HTMLDivElement;
 
-      // Clear previous student cards
       studentList.innerHTML = '';
 
-      // Create student card for each student profile
       allStudentProfiles.forEach((studentProfile) => {
-        // Clone student card template
         const clonedTemplate = studentCardTemplate.cloneNode(true) as HTMLDivElement;
-
-        // Get elements for student name and checkbox
         const studentNameElement = clonedTemplate.querySelector('.fs_checkbox-1_label');
         const studentCheckbox = clonedTemplate.querySelector(
           'input[type="checkbox"]'
         ) as HTMLInputElement;
 
-        // Set student name and checkbox value
         if (studentNameElement) {
           studentNameElement.textContent = `${studentProfile.firstName} ${studentProfile.lastName}`;
         }
 
-        // Handle checkbox state changes
         if (studentCheckbox) {
           studentCheckbox.value = studentProfile.id.toString();
 
           studentCheckbox.addEventListener('change', () => {
-            // When checkbox is checked, add student to selected students
-            // When checkbox is unchecked, remove student from selected students
             if (studentCheckbox.checked) {
               studentsSelected.push(studentProfile);
             } else {
@@ -99,31 +96,24 @@ async function handleStudentProfiles(): Promise<void> {
                 studentsSelected.splice(index, 1);
               }
             }
-            // Log the current selected students
             console.log('Selected Student Profiles:', studentsSelected);
           });
         }
 
-        // Append student card to student list
         studentList.appendChild(clonedTemplate);
       });
 
-      // Hide student card template and display student list
       studentCardTemplate.style.display = 'none';
       studentList.style.display = 'grid';
 
-      // Hide loading animation and display the registration form
       loadingAnimation.style.display = 'none';
       registrationFormWrapper.style.display = 'block';
     } else {
-      // No student profiles found
-      // Hide loading animation and display the "No Student Profiles" message
       loadingAnimation.style.display = 'none';
       noStudentProfiles.style.display = 'block';
       registrationFormWrapper.style.display = 'none';
     }
   } catch (error) {
-    // Log error and display error message
     console.error('An error occurred while fetching student profiles:', error);
     alert('An error occurred while fetching student profiles.');
   }
@@ -324,6 +314,7 @@ function handleFormSubmit(): void {
             contactLists,
             startDate,
             endDate,
+            interest: interestValue,
           }),
         });
 
@@ -384,6 +375,21 @@ function handleFreeFormSubmit(): void {
           submitError.innerText = 'Please make sure all required fields are filled';
         }
         return;
+      }
+
+      //validate interest
+      const interest = document.getElementById('interestInput') as HTMLInputElement;
+      const interestError = document.getElementById('interestError');
+      const interestValue = interest.value;
+      const interestValid = validateInterest(interestValue);
+      if (!interestValid) {
+        if (interestError) {
+          interestError.style.display = 'block';
+          interestError.innerText = 'This field is required';
+        } else {
+          interestError.style.display = 'none';
+        }
+        errorFlag = true;
       }
 
       const profileString = localStorage.getItem('profile');
@@ -454,6 +460,7 @@ function handleFreeFormSubmit(): void {
               contactLists,
               startDate,
               endDate,
+              interest: interestValue,
             }),
           }
         );
@@ -500,6 +507,18 @@ document.addEventListener('DOMContentLoaded', function () {
     if (registrationFormWrapper) {
       registrationFormWrapper.style.display = 'block';
       handleStudentProfiles();
+    }
+  }
+
+  //if role in localStorage is student display #studentAccount and hide #registrationFormWrapper
+  const role = localStorage.getItem('role');
+  if (role === 'student') {
+    const studentAccount = document.getElementById('studentAccount');
+    const registrationFormWrapper = document.getElementById('registrationFormWrapper');
+
+    if (studentAccount) {
+      studentAccount.style.display = 'block';
+      registrationFormWrapper.style.display = 'none';
     }
   }
 
@@ -580,4 +599,13 @@ if (addStudentButton) {
     localStorage.setItem('redirectURL', window.location.href);
     window.location.href = '/create-account/add-student';
   });
+}
+
+//if role in local storage is student, hide #addStudentsWrapper
+const role = localStorage.getItem('role');
+if (role === 'student') {
+  const addStudentsWrapper = document.getElementById('addStudentsWrapper');
+  if (addStudentsWrapper) {
+    addStudentsWrapper.style.display = 'none';
+  }
 }

@@ -4,6 +4,12 @@ import { authenticate } from './utils/requests/auth/authenticateUser';
 // authenticate on page load
 authenticate();
 
+// if role in localStorage is 'student', redirect to /student-dashboard
+const role = localStorage.getItem('role');
+if (role === 'student') {
+  window.location.href = '/student-dashboard';
+}
+
 // Get all toggle switches
 const toggleSwitches = document.querySelectorAll<HTMLInputElement>(
   '.switch input[type="checkbox"]'
@@ -123,6 +129,18 @@ submitButton.addEventListener('click', (e) => {
 import { getStudentsDashboard } from './utils/requests/studentRequests';
 getStudentsDashboard();
 
-//import getTicketOrder()
-import { getTicketOrder } from './utils/requests/getTicketOrders';
-getTicketOrder();
+//if user clicks the button with the id addStudent set redirectURL in localStorage to the current url
+const addStudentButton = document.getElementById('addStudent');
+if (addStudentButton) {
+  addStudentButton.addEventListener('click', () => {
+    localStorage.setItem('redirectURL', window.location.href);
+  });
+}
+
+// get ticket orders
+import { getTicketOrders } from './utils/requests/getTicketOrders';
+getTicketOrders();
+
+// import fetchFiles from './utils/requests/getFiles';
+import { fetchFiles } from './utils/requests/getFiles';
+fetchFiles();

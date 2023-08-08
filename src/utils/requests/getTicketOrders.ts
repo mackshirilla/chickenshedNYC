@@ -15,7 +15,7 @@ interface TicketOrdersResponse {
   };
 }
 
-export function getTicketOrder() {
+export function getTicketOrders() {
   // Retrieve 'profile' object from localStorage
   const profileJSON = localStorage.getItem('profile');
 
