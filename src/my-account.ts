@@ -144,3 +144,27 @@ getTicketOrders();
 // import fetchFiles from './utils/requests/getFiles';
 import { fetchFiles } from './utils/requests/getFiles';
 fetchFiles();
+
+// when a user clicks the #deleteAccount button, send a POST request containing the id found in the profile object in local storage
+const deleteAccountButton = document.getElementById('deleteAccount');
+if (deleteAccountButton) {
+  deleteAccountButton.addEventListener('click', () => {
+    const profile = JSON.parse(localStorage.getItem('profile') as string);
+    const { id } = profile;
+    fetch('https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/Delete_Account', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id }),
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          window.location.href = '/logout';
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  });
+}
