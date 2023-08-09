@@ -107,7 +107,7 @@ function handleFormSubmit(event: Event) {
   };
 
   const request = new XMLHttpRequest();
-  request.open('POST', 'https://x8ki-letl-twmt.n7.xano.io/api:lRsgmoHt/sessions');
+  request.open('POST', 'https://xszy-vp96-kdkh.n7c.xano.io/api:lRsgmoHt/sessions');
   request.setRequestHeader('Content-Type', 'application/json');
 
   request.onreadystatechange = function () {

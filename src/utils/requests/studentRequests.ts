@@ -2,7 +2,7 @@
 export async function addStudentOnLoad() {
   try {
     const response = await fetch(
-      'https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/student_profiles',
+      'https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/student_profiles',
       {
         method: 'POST',
         headers: {
@@ -56,7 +56,7 @@ export async function getStudentProfiles() {
     loadingAnimation.style.display = 'block';
 
     const response = await fetch(
-      `https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/student_profiles?guardianUserID=${guardianUserID}`,
+      `https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/student_profiles?guardianUserID=${guardianUserID}`,
       {
         method: 'GET',
         headers: {
@@ -154,7 +154,7 @@ export async function updateStudentProfile() {
 
   try {
     const response = await fetch(
-      `https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/student_profiles/${studentId}`,
+      `https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/student_profiles/${studentId}`,
       {
         method: 'POST',
         headers: {
@@ -243,7 +243,7 @@ export async function getStudentsDashboard() {
     loadingAnimation.style.display = 'block';
 
     const response = await fetch(
-      `https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/student_profiles?guardianUserID=${guardianUserID}`,
+      `https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/student_profiles?guardianUserID=${guardianUserID}`,
       {
         method: 'GET',
         headers: {

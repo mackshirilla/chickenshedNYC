@@ -13,7 +13,7 @@ export async function login() {
 
   try {
     const email = emailInput.value;
-    const url = `https://x8ki-letl-twmt.n7.xano.io/api:WyQO-hFi/auth/magic-link?email=${encodeURIComponent(
+    const url = `https://xszy-vp96-kdkh.n7c.xano.io/api:WyQO-hFi/auth/magic-link?email=${encodeURIComponent(
       email
     )}`;
 

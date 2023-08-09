@@ -151,7 +151,7 @@ if (deleteAccountButton) {
   deleteAccountButton.addEventListener('click', () => {
     const profile = JSON.parse(localStorage.getItem('profile') as string);
     const { userID } = profile;
-    fetch('https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/Delete_Account', {
+    fetch('https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/Delete_Account', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -8,7 +8,7 @@ export function authenticate(): Promise<void> {
     return Promise.reject();
   }
 
-  return fetch('https://x8ki-letl-twmt.n7.xano.io/api:WyQO-hFi/auth/me', {
+  return fetch('https://xszy-vp96-kdkh.n7c.xano.io/api:WyQO-hFi/auth/me', {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${authToken}`,

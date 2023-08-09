@@ -18,7 +18,7 @@ async function fetchCartItems(): Promise<unknown[]> {
     return [];
   }
 
-  const endpoint = `https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/cart_items?userID=${userID}`;
+  const endpoint = `https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/cart_items?userID=${userID}`;
 
   const cartLoadingAnimation = document.getElementById('cartLoading') as HTMLDivElement | null;
   if (cartLoadingAnimation) {
@@ -172,7 +172,7 @@ function displayCartItems(cartItems: any[]): void {
 
 // Function to remove an item from the cart
 async function removeFromCart(itemId: string): Promise<void> {
-  const endpoint = `https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/cart_items/${itemId}`;
+  const endpoint = `https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/cart_items/${itemId}`;
 
   try {
     const response = await fetch(endpoint, {
@@ -259,7 +259,7 @@ async function createCheckoutSession(cartItems: any[]) {
     metadata: metadata,
   };
 
-  const endpoint = 'https://x8ki-letl-twmt.n7.xano.io/api:lRsgmoHt/sessions';
+  const endpoint = 'https://xszy-vp96-kdkh.n7c.xano.io/api:lRsgmoHt/sessions';
 
   const checkoutLoadingAnimation = document.getElementById(
     'checkoutLoadingAnimation'

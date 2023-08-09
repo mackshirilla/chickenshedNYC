@@ -15,7 +15,7 @@ let priceID: string | null = null;
 async function fetchStudentProfiles(guardianUserID: string): Promise<StudentProfile[]> {
   // Send GET request to server to fetch student profiles
   const response = await fetch(
-    `https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/student_profiles?guardianUserID=${guardianUserID}`,
+    `https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/student_profiles?guardianUserID=${guardianUserID}`,
     {
       method: 'GET',
       headers: {
@@ -286,7 +286,7 @@ function handleFormSubmit(): void {
 
       try {
         // Make a POST request to your endpoint with the form data
-        const response = await fetch('https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/cart_items', {
+        const response = await fetch('https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/cart_items', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -437,7 +437,7 @@ function handleFreeFormSubmit(): void {
 
       try {
         const response = await fetch(
-          'https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/FREE_REGISTRATION',
+          'https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/FREE_REGISTRATION',
           {
             method: 'POST',
             headers: {

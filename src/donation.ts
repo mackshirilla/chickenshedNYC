@@ -170,7 +170,7 @@ function handleSubmit(event: Event) {
   }
 
   // Make an API call to your Xano endpoint
-  fetch('https://x8ki-letl-twmt.n7.xano.io/api:lRsgmoHt/sessions', {
+  fetch('https://xszy-vp96-kdkh.n7c.xano.io/api:lRsgmoHt/sessions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

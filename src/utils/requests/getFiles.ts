@@ -12,7 +12,7 @@ export function fetchFiles() {
     return;
   }
 
-  const endpointURL = 'https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/Get_Files';
+  const endpointURL = 'https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/Get_Files';
   const postData = {
     id: id,
     role: role,
@@ -60,7 +60,7 @@ export function fetchFiles() {
               fileNameElement.textContent = file.name;
             }
 
-            const fileLinkElement = fileElement.querySelector('#fileLink');
+            const fileLinkElement = fileElement.querySelector('#fileLink') as HTMLAnchorElement; // Add type assertion here
             if (fileLinkElement) {
               fileLinkElement.href = file.filelink;
             }

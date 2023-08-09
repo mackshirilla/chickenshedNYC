@@ -35,7 +35,7 @@ export function uploadGuardianImage(inputElement: HTMLInputElement) {
 
           // Send the base64 string and guardianID to the endpoint
           const response = await fetch(
-            'https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/guardianImages',
+            'https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/guardianImages',
             {
               method: 'POST',
               headers: {
@@ -110,7 +110,7 @@ export function uploadStudentImage(inputElement: HTMLInputElement) {
 
           // Send the base64 string and studentID to the endpoint
           const response = await fetch(
-            'https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/studentImages',
+            'https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/studentImages',
             {
               method: 'POST',
               headers: {

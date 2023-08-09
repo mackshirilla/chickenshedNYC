@@ -43,7 +43,7 @@ export function getTicketOrders() {
   });
 
   // Construct the GET request URL with query parameters
-  const url = `https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/Ticket_Orders?${queryParams}`;
+  const url = `https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/Ticket_Orders?${queryParams}`;
 
   // Send GET request
   fetch(url, {
@@ -55,7 +55,7 @@ export function getTicketOrders() {
     .then((response) => response.json() as Promise<TicketOrdersResponse>)
     .then((data) => {
       // Handle the response data
-      console.log('Response:', data);
+      //console.log('Response:', data);
 
       // Check if 'result' exists in the response data
       if (!data.response || !data.response.result || !data.response.result.records) {

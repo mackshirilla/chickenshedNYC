@@ -12,7 +12,7 @@ async function magicLink() {
 
   try {
     const response = await fetch(
-      'https://x8ki-letl-twmt.n7.xano.io/api:WyQO-hFi/auth/magic-login',
+      'https://xszy-vp96-kdkh.n7c.xano.io/api:WyQO-hFi/auth/magic-login',
       {
         method: 'POST',
         headers: {

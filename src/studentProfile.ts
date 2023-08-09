@@ -136,7 +136,7 @@ window.addEventListener('load', () => {
   const airtableID = urlParams.get('student');
 
   if (airtableID) {
-    const apiUrl = `https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/getStudentProfile`;
+    const apiUrl = `https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/getStudentProfile`;
 
     fetch(apiUrl, {
       method: 'POST',

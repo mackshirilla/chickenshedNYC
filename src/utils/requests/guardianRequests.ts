@@ -28,7 +28,7 @@ export async function finishGuardianAccountSetup() {
 
     try {
       const response = await fetch(
-        `https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/guardians/${guardianID}`,
+        `https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/guardians/${guardianID}`,
         {
           method: 'POST',
           headers: {
@@ -109,7 +109,7 @@ export function getGuardianProfile(): Promise<GuardianProfile> {
     return Promise.reject(new Error('Guardian ID not found in profile'));
   }
 
-  const url = `https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/guardians/${guardianId}`;
+  const url = `https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/guardians/${guardianId}`;
 
   return fetch(url, {
     method: 'GET',
@@ -212,7 +212,7 @@ export async function updateGuardianProfile() {
 
     try {
       const response = await fetch(
-        `https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/guardians/${guardianID}`,
+        `https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/guardians/${guardianID}`,
         {
           method: 'POST',
           headers: {

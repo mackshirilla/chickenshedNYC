@@ -21,7 +21,7 @@ const orderNumber = urlParams.get('order');
 // Check if the orderNumber is null
 if (orderNumber !== null) {
   // Define the Xano endpoint URL
-  const xanoEndpoint = 'https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/Ticket_Orders';
+  const xanoEndpoint = 'https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/Ticket_Orders';
 
   // Construct the full URL with the query parameter
   const urlWithQueryParams = new URL(xanoEndpoint);
