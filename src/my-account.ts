@@ -150,13 +150,13 @@ const deleteAccountButton = document.getElementById('deleteAccount');
 if (deleteAccountButton) {
   deleteAccountButton.addEventListener('click', () => {
     const profile = JSON.parse(localStorage.getItem('profile') as string);
-    const { id } = profile;
+    const { userID } = profile;
     fetch('https://x8ki-letl-twmt.n7.xano.io/api:2gnTJ2I8/Delete_Account', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id }),
+      body: JSON.stringify({ userID }),
     })
       .then((res) => {
         if (res.status === 200) {
