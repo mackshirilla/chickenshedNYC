@@ -160,7 +160,7 @@ if (deleteAccountButton) {
     })
       .then((res) => {
         if (res.status === 200) {
-          window.location.href = '/logout';
+          window.location.href = '/login';
         }
       })
       .catch((err) => {
