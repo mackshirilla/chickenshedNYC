@@ -160,6 +160,9 @@ if (deleteAccountButton) {
     })
       .then((res) => {
         if (res.status === 200) {
+          //clear local storage
+          localStorage.clear();
+          //redirect to login page
           window.location.href = '/login';
         }
       })

@@ -333,3 +333,20 @@ export function validateInterest() {
 if (interestInput) {
   interestInput.addEventListener('blur', validateInterest);
 }
+
+// validate blood type
+const bloodType = document.getElementById('bloodType') as HTMLInputElement;
+const bloodTypeError = document.getElementById('bloodTypeError') as HTMLDivElement;
+
+export function validateBloodType() {
+  if (bloodType.hasAttribute('required') && bloodType.value.trim() === '') {
+    bloodTypeError.textContent = 'This field is required';
+    bloodTypeError.style.display = 'block';
+    bloodType.classList.add('error');
+    return false;
+  }
+  bloodTypeError.textContent = '';
+  bloodTypeError.style.display = 'none';
+  bloodType.classList.remove('error');
+  return true;
+}

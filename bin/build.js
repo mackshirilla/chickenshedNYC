@@ -21,6 +21,7 @@ const ENTRY_POINTS = [
   'src/my-account.ts',
   'src/studentProfile.ts',
   'src/studentDashboard.ts',
+  'src/contactPage.ts',
 ];
 
 // Config dev serving
