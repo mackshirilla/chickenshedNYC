@@ -24,12 +24,7 @@ function toggleErrorMessage(errorId, message) {
 function validateInput(inputId, errorId) {
   const inputElement = document.getElementById(inputId);
   const isInvalid = inputElement && containsBadWords(inputElement.value);
-  toggleErrorMessage(
-    errorId,
-    isInvalid
-      ? 'Threatening language detected. If continued your IP address will be sent to the authorities for inspection.'
-      : ''
-  );
+  toggleErrorMessage(errorId, isInvalid ? 'Innappropirate language detected' : '');
 }
 
 // Event listeners for each input to validate on typing
