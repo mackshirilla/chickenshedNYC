@@ -79,42 +79,40 @@ if (orderNumber !== null) {
             performanceTimeTitle.textContent = ticketRecords[0].fields.performanceTime;
           }
 
-          ticketRecords
-            .filter((record) => !record.fields.ticketTier.toLowerCase().includes('donation'))
-            .forEach((record) => {
-              // Clone the template item to create a new ticket item
-              const ticketItem = templateItem.cloneNode(true) as HTMLElement;
-              ticketItem.classList.remove('hidden');
+          ticketRecords.forEach((record) => {
+            // Clone the template item to create a new ticket item
+            const ticketItem = templateItem.cloneNode(true) as HTMLElement;
+            ticketItem.classList.remove('hidden');
 
-              // Apply the ticket record data to the ticket item template
-              ticketItem.querySelector('#performanceDate')!.textContent = formatDate(
-                record.fields.performanceDate
-              );
-              ticketItem.querySelector('#performanceTime')!.textContent =
-                record.fields.performanceTime;
-              ticketItem.querySelector('#performanceName')!.textContent =
-                record.fields.performanceName;
-              ticketItem.querySelector('#customerName')!.textContent = record.fields.customerName;
-              ticketItem.querySelector('#ticketTier')!.textContent = record.fields.ticketTier;
-              ticketItem.querySelector('#unitAmount')!.textContent = formatCurrency(
-                record.fields.unitAmount
-              );
-              ticketItem.querySelector('#seatingAssignment')!.textContent =
-                record.fields.seatAssignment;
+            // Apply the ticket record data to the ticket item template
+            ticketItem.querySelector('#performanceDate')!.textContent = formatDate(
+              record.fields.performanceDate
+            );
+            ticketItem.querySelector('#performanceTime')!.textContent =
+              record.fields.performanceTime;
+            ticketItem.querySelector('#performanceName')!.textContent =
+              record.fields.performanceName;
+            ticketItem.querySelector('#customerName')!.textContent = record.fields.customerName;
+            ticketItem.querySelector('#ticketTier')!.textContent = record.fields.ticketTier;
+            ticketItem.querySelector('#unitAmount')!.textContent = formatCurrency(
+              record.fields.unitAmount
+            );
+            ticketItem.querySelector('#seatingAssignment')!.textContent =
+              record.fields.seatAssignment;
 
-              // Set the QR code image source
-              const qrCodeImage = ticketItem.querySelector('#QR_code') as HTMLImageElement;
-              if (qrCodeImage) {
-                const qrCodeUrl =
-                  record.fields.QR_code && record.fields.QR_code[0]?.url
-                    ? record.fields.QR_code[0]?.url
-                    : '';
-                qrCodeImage.src = qrCodeUrl;
-              }
+            // Set the QR code image source
+            const qrCodeImage = ticketItem.querySelector('#QR_code') as HTMLImageElement;
+            if (qrCodeImage) {
+              const qrCodeUrl =
+                record.fields.QR_code && record.fields.QR_code[0]?.url
+                  ? record.fields.QR_code[0]?.url
+                  : '';
+              qrCodeImage.src = qrCodeUrl;
+            }
 
-              // Append the ticket item to the ticket list
-              ticketList.appendChild(ticketItem);
-            });
+            // Append the ticket item to the ticket list
+            ticketList.appendChild(ticketItem);
+          });
         } else {
           // Display a message indicating no tickets found
           const noTicketsMessage = document.createElement('div');
