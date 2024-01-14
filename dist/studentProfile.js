@@ -1,1 +1,613 @@
-"use strict";(()=>{function ne(){let e=localStorage.getItem("authToken");return e?fetch("https://xszy-vp96-kdkh.n7c.xano.io/api:WyQO-hFi/auth/me",{method:"GET",headers:{Authorization:`Bearer ${e}`,"Content-Type":"application/json"}}).then(t=>{if(!t.ok)throw new Error("Network response was not ok");return t.json()}).catch(t=>{console.error("Error:",t);let a=document.querySelector(".page-wrapper");a&&a.hasAttribute("gatedContent")&&(window.location.href="/login",localStorage.removeItem("authToken"),localStorage.removeItem("profile"),localStorage.removeItem("role"))}):(window.location.href="/login",Promise.reject())}function ae(e){e.addEventListener("change",async()=>{var r;let t=document.getElementById("profileImage"),a=document.getElementById("fileError"),l=document.getElementById("fileUploaded"),c=document.getElementById("loadingImageAnimation"),o=(r=e.files)==null?void 0:r[0];if(o){if(o.size>2*1024*1024){a.textContent="File size must be less than 2MB",a.style.display="block";return}let n=new FileReader;n.onload=async()=>{t.src=n.result,a.textContent="",a.style.display="none",c.style.display="flex";try{let s=localStorage.getItem("studentID"),i=await fetch("https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/studentImages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({studentID:s,studentImage:n.result})});if(i.ok)l.style.display="block";else throw new Error(`Error: ${i.status} ${i.statusText}`)}catch(s){a.textContent=s.message,a.style.display="block"}finally{c.style.display="none"}},n.readAsDataURL(o)}else t.src="https://assets.website-files.com/64404db37a2b832b7d5aa9f8/64404db37a2b831d465aaa01_image.svg",a.textContent="",a.style.display="none"})}var h=document.getElementById("firstNameInput"),k=document.getElementById("firstNameError");function U(){return h.hasAttribute("required")&&h.value.trim()===""?(k.textContent="First name required",k.style.display="block",h.classList.add("error"),!1):(k.textContent="",k.style.display="none",h.classList.remove("error"),!0)}h&&h.addEventListener("blur",U);var L=document.getElementById("lastNameInput"),N=document.getElementById("lastNameError");function J(){return L.hasAttribute("required")&&L.value.trim()===""?(N.textContent="Last name required",N.style.display="block",L.classList.add("error"),!1):(N.textContent="",N.style.display="none",L.classList.remove("error"),!0)}L&&L.addEventListener("blur",J);var m=document.getElementById("emailInput"),y=document.getElementById("emailError");function z(){let e=/^\S+@\S+\.\S+$/;return m.hasAttribute("required")&&m.value.trim()===""?(y.textContent="Email is required",y.style.display="block",m.classList.add("error"),!1):m.value.trim()!==""&&!e.test(m.value)?(y.textContent="Please enter a valid email",y.style.display="block",m.classList.add("error"),!1):(y.textContent="",y.style.display="none",m.classList.remove("error"),!0)}m&&m.addEventListener("blur",z);var d=document.getElementById("phoneInput"),g=document.getElementById("phoneError");function se(e){let t=e.replace(/\D/g,"");return t.length===0?"":t.length<4?`(${t}`:t.length<7?`(${t.slice(0,3)}) ${t.slice(3)}`:`(${t.slice(0,3)}) ${t.slice(3,6)}-${t.slice(6,10)}`}function F(){let e=/^\D*(\d{3})\D*\D*(\d{3})\D*(\d{4})\D*$/;return d.required&&d.value.trim()===""?(g.textContent="Phone is required",g.style.display="block",d.classList.add("error"),!1):d.value.trim()!==""&&!e.test(d.value)?(g.textContent="Please enter a valid phone number",g.style.display="block",d.classList.add("error"),!1):(d.value=se(d.value),g.textContent="",g.style.display="none",d.classList.remove("error"),!0)}d&&d.addEventListener("input",e=>{let t=e.target;t.value=se(t.value),F()});var v=document.getElementById("dobInput"),S=document.getElementById("dobError");function G(){return v.hasAttribute("required")&&v.value.trim()===""?(S.textContent="Date of Birth is required",S.style.display="block",v.classList.add("error"),!1):(S.textContent="",S.style.display="none",v.classList.remove("error"),!0)}v&&v.addEventListener("blur",G);var T=document.getElementById("genderInput"),w=document.getElementById("genderError");function _(){return T.hasAttribute("required")&&T.value.trim()===""?(w.textContent="Gender is required",w.style.display="block",T.classList.add("error"),!1):(w.textContent="",w.style.display="none",T.classList.remove("error"),!0)}T&&T.addEventListener("blur",_);var b=document.getElementById("schoolInput"),q=document.getElementById("schoolError");function W(){return b.hasAttribute("required")&&b.value.trim()===""?(q.textContent="School name is required",q.style.display="block",b.classList.add("error"),!1):(q.textContent="",q.style.display="none",b.classList.remove("error"),!0)}b&&b.addEventListener("blur",W);var M=document.getElementById("gradeInput"),A=document.getElementById("gradeError");function V(){return M.hasAttribute("required")&&M.value.trim()==="N/A"?(A.textContent="Grade is required",A.style.display="block",M.classList.add("error"),!1):(A.textContent="",A.style.display="none",M.classList.remove("error"),!0)}M&&M.addEventListener("blur",V);var j=document.getElementById("ethnicityInput"),f=document.getElementById("ethnicityError");function Z(){return j.hasAttribute("required")&&j.value.trim()===""?(f.textContent="Ethnicity is required",f.style.display="block",j.classList.add("error"),!1):(f.textContent="",f.style.display="none",f.classList.remove("error"),!0)}f&&j.addEventListener("blur",Z);var H=document.getElementById("healthInput"),P=document.getElementById("healthError");function Q(){return H.hasAttribute("required")&&H.value.trim()===""?(P.textContent="This field is required",P.style.display="block",H.classList.add("error"),!1):(P.textContent="",P.style.display="none",H.classList.remove("error"),!0)}H&&H.addEventListener("blur",Q);var x=document.getElementById("emergencyContact"),O=document.getElementById("emergencyError");function X(){return x.hasAttribute("required")&&x.value.trim()===""?(O.textContent="This field is required",O.style.display="block",x.classList.add("error"),!1):(O.textContent="",O.style.display="none",x.classList.remove("error"),!0)}x&&x.addEventListener("blur",X);var B=document.getElementById("dismissal"),R=document.getElementById("dismissalError");function K(){return B.hasAttribute("required")&&B.value.trim()===""?(R.textContent="This field is required",R.style.display="block",B.classList.add("error"),!1):(R.textContent="",R.style.display="none",B.classList.remove("error"),!0)}B&&B.addEventListener("blur",K);var u=document.getElementById("additionalEmail"),I=document.getElementById("additionalEmailError");function Y(){let e=/^\S+@\S+\.\S+$/;return u.hasAttribute("required")&&u.value.trim()===""?(I.textContent="Email is required",I.style.display="block",u.classList.add("error"),!1):u.value.trim()!==""&&!e.test(u.value)?(I.textContent="Please enter a valid email",I.style.display="block",u.classList.add("error"),!1):(I.textContent="",I.style.display="none",u.classList.remove("error"),!0)}u&&u.addEventListener("blur",Y);var D=document.getElementById("interestInput"),$=document.getElementById("interestError");function Le(){return D.hasAttribute("required")&&D.value.trim()===""?($.textContent="This field is required",$.style.display="block",D.classList.add("error"),!1):($.textContent="",$.style.display="none",D.classList.remove("error"),!0)}D&&D.addEventListener("blur",Le);var He=document.getElementById("bloodType"),xe=document.getElementById("bloodTypeError");async function le(){let e=localStorage.getItem("studentID"),t=localStorage.getItem("profile");if(!t||!e)return;let a=JSON.parse(t),{userID:l}=a,c=document.getElementById("loadingAnimation");c.style.display="block";let o={firstName:document.getElementById("firstNameInput").value,lastName:document.getElementById("lastNameInput").value,email:document.getElementById("emailInput").value,phone:document.getElementById("phoneInput").value,dob:document.getElementById("dobInput").value,gender:document.getElementById("genderInput").value,ethnicity:document.getElementById("ethnicityInput").value,health:document.getElementById("healthInput").value,additionalName:document.getElementById("additionalName").value,additionalEmail:document.getElementById("additionalEmail").value,additionalPhone:document.getElementById("additionalPhone").value,emergencyContact:document.getElementById("emergencyContact").value,dismissal:document.getElementById("dismissal").value,family:document.getElementById("family").value,grade:document.getElementById("gradeInput").value,school:document.getElementById("schoolInput").value,sendTexts:document.getElementById("sendTexts").checked,photoRelease:document.getElementById("photoRelease").checked,independentTravel:document.getElementById("independentTravel").checked,studentID:e,guardianUserID:l};try{let r=await fetch(`https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/student_profiles/${e}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(o)});if(r.ok){let n=await r.json(),s=document.getElementById("submitError");s.style.display="none";let i=document.getElementById("successMessage");i.style.display="flex";let E=document.getElementById("addStudentContainer");E.style.display="none",window.scrollTo(0,0);let p=document.getElementById("studentName");p.textContent=`${n.studentProfile.firstName} ${n.studentProfile.lastName}`;let C=document.getElementById("studentEmail");C.textContent=n.studentProfile.email;let ee=document.getElementById("studentPhone");ee.textContent=n.studentProfile.phone;let he=document.getElementById("studentImage");n.studentProfile.image&&n.studentProfile.image.url&&(he.src=n.studentProfile.image.url)}else{let n=await r.json(),s=document.getElementById("submitError");s&&(n.message==="Duplicate record detected. Please check your input and try again."?s.textContent="A user with that email already exists. If your student doesn\u2019t have their own email, please leave blank":s.textContent=n.message||"An error occurred",s.style.display="block",c.style.display="none")}}catch(r){console.error(r)}}ne();function ve(e){function t(i,E){let p=document.getElementById(i);if(p){if(p.tagName==="INPUT"||p.tagName==="TEXTAREA")p.value=E;else if(p.tagName==="SELECT"){let C=Array.from(p.options).find(ee=>ee.value===E);C&&(C.selected=!0)}}}t("firstNameInput",e.firstName),t("lastNameInput",e.lastName),t("phoneInput",e.phone),t("emailInput",e.email),t("dobInput",e.dob),t("schoolInput",e.school),t("gradeInput",e.grade),t("genderInput",e.gender),t("ethnicityInput",e.ethnicity),t("healthInput",e.health),t("emergencyContact",e.emergencyContact),t("dismissal",e.dismissal),["photoRelease","independentTravel","sendTexts"].forEach(i=>{let E=document.getElementById(i);E&&(E.checked=e[i])}),t("family",e.family),t("additionalName",e.additionalName),t("additionalEmail",e.additionalEmail),t("additionalPhone",e.additionalPhone);let l=document.getElementById("studentName");if(l){let i=`${e.firstName} ${e.lastName}`;l.textContent=i}let c=document.getElementById("profileImage");e.image&&e.image.url?c.src=e.image.url:c.src="https://uploads-ssl.webflow.com/64404db37a2b832b7d5aa9f8/64713ce0d5227bcec70c5505_360_F_542361185_VFRJWpR2FH5OiAEVveWO7oZnfSccZfD3.jpg";let o=document.getElementById("additionalCare"),r=document.getElementById("additionalOverflow");o&&r&&(o.checked=!!e.additionalName||!!e.additionalEmail||!!e.additionalPhone,r.style.height=o.checked?"32rem":"0",o.addEventListener("click",()=>{r.style.height=o.checked?"32rem":"0"}));let n=document.getElementById("familyToggle"),s=document.getElementById("familyOverflow");n&&s&&(n.checked=!!e.family,s.style.height=n.checked?"12rem":"0",n.addEventListener("click",()=>{s.style.height=n.checked?"12rem":"0"})),e.id&&localStorage.setItem("studentID",String(e.id))}window.addEventListener("load",()=>{let t=new URLSearchParams(window.location.search).get("student");t?fetch("https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/getStudentProfile",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({airtableID:t})}).then(l=>l.json()).then(l=>{ve(l)}).catch(l=>{console.error("Error fetching data:",l)}):console.error("Missing airtableID parameter in the URL")});var Te=document.getElementById("imageUpload");ae(Te);var re=document.getElementById("firstNameInput");re&&re.addEventListener("input",U);var ie=document.getElementById("lastNameInput");ie&&ie.addEventListener("input",J);var oe=document.getElementById("emailInput");oe&&oe.addEventListener("input",z);var de=document.getElementById("phoneInput");de&&de.addEventListener("input",F);var me=document.getElementById("dobInput");me&&me.addEventListener("input",G);var ue=document.getElementById("genderInput");ue&&ue.addEventListener("input",_);var ce=document.getElementById("schoolInput");ce&&ce.addEventListener("input",W);var pe=document.getElementById("gradeInput");pe&&pe.addEventListener("input",V);var Ee=document.getElementById("ethnicityInput");Ee&&Ee.addEventListener("input",Z);var ye=document.getElementById("healthInput");ye&&ye.addEventListener("input",Q);var ge=document.getElementById("emergencyContact");ge&&ge.addEventListener("input",X);var Ie=document.getElementById("dismissal");Ie&&Ie.addEventListener("input",K);var fe=document.getElementById("additionalEmail");fe&&fe.addEventListener("input",Y);var te=document.getElementById("submitButton");te==null||te.addEventListener("click",e=>{if(!U()||!J()||!z()||!F()||!G()||!_()||!W()||!V()||!Z()||!Q()||!X()||!K()||!Y()){e.preventDefault();let t=document.getElementById("submitError");t&&(t.style.display="block",t.textContent="Please make sure you have entered all fields correctly.")}else e.preventDefault(),le()});})();
+"use strict";
+(() => {
+  // bin/live-reload.js
+  new EventSource(`${"http://localhost:3000"}/esbuild`).addEventListener("change", () => location.reload());
+
+  // src/utils/requests/auth/authenticateUser.ts
+  function authenticate() {
+    const authToken = localStorage.getItem("authToken");
+    if (!authToken) {
+      window.location.href = "/login";
+      return Promise.reject();
+    }
+    return fetch("https://xszy-vp96-kdkh.n7c.xano.io/api:WyQO-hFi/auth/me", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        "Content-Type": "application/json"
+      }
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    }).catch((error) => {
+      console.error("Error:", error);
+      const pageWrapper = document.querySelector(".page-wrapper");
+      const isGated = pageWrapper && pageWrapper.hasAttribute("gatedContent");
+      if (isGated) {
+        window.location.href = "/login";
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("profile");
+        localStorage.removeItem("role");
+      }
+    });
+  }
+
+  // src/utils/forms/imageUpload.ts
+  function uploadStudentImage(inputElement) {
+    inputElement.addEventListener("change", async () => {
+      const profileImage = document.getElementById("profileImage");
+      const fileError = document.getElementById("fileError");
+      const fileUploaded = document.getElementById("fileUploaded");
+      const loadingImageAnimation = document.getElementById(
+        "loadingImageAnimation"
+      );
+      const selectedImage = inputElement.files?.[0];
+      if (selectedImage) {
+        if (selectedImage.size > 2 * 1024 * 1024) {
+          fileError.textContent = "File size must be less than 2MB";
+          fileError.style.display = "block";
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = async () => {
+          profileImage.src = reader.result;
+          fileError.textContent = "";
+          fileError.style.display = "none";
+          loadingImageAnimation.style.display = "flex";
+          try {
+            const studentID = localStorage.getItem("studentID");
+            const response = await fetch(
+              "https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/studentImages",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                  studentID,
+                  studentImage: reader.result
+                })
+              }
+            );
+            if (!response.ok) {
+              throw new Error(`Error: ${response.status} ${response.statusText}`);
+            } else {
+              fileUploaded.style.display = "block";
+            }
+          } catch (error) {
+            fileError.textContent = error.message;
+            fileError.style.display = "block";
+          } finally {
+            loadingImageAnimation.style.display = "none";
+          }
+        };
+        reader.readAsDataURL(selectedImage);
+      } else {
+        profileImage.src = "https://assets.website-files.com/64404db37a2b832b7d5aa9f8/64404db37a2b831d465aaa01_image.svg";
+        fileError.textContent = "";
+        fileError.style.display = "none";
+      }
+    });
+  }
+
+  // src/utils/forms/inputValidation.ts
+  var firstNameInput = document.getElementById("firstNameInput");
+  var firstNameError = document.getElementById("firstNameError");
+  function validateFirstName() {
+    const isRequired = firstNameInput.hasAttribute("required");
+    if (isRequired && firstNameInput.value.trim() === "") {
+      firstNameError.textContent = "First name required";
+      firstNameError.style.display = "block";
+      firstNameInput.classList.add("error");
+      return false;
+    }
+    firstNameError.textContent = "";
+    firstNameError.style.display = "none";
+    firstNameInput.classList.remove("error");
+    return true;
+  }
+  if (firstNameInput) {
+    firstNameInput.addEventListener("blur", validateFirstName);
+  }
+  var lastNameInput = document.getElementById("lastNameInput");
+  var lastNameError = document.getElementById("lastNameError");
+  function validateLastName() {
+    const isRequired = lastNameInput.hasAttribute("required");
+    if (isRequired && lastNameInput.value.trim() === "") {
+      lastNameError.textContent = "Last name required";
+      lastNameError.style.display = "block";
+      lastNameInput.classList.add("error");
+      return false;
+    }
+    lastNameError.textContent = "";
+    lastNameError.style.display = "none";
+    lastNameInput.classList.remove("error");
+    return true;
+  }
+  if (lastNameInput) {
+    lastNameInput.addEventListener("blur", validateLastName);
+  }
+  var emailInput = document.getElementById("emailInput");
+  var emailError = document.getElementById("emailError");
+  function validateEmail() {
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    if (emailInput.hasAttribute("required") && emailInput.value.trim() === "") {
+      emailError.textContent = "Email is required";
+      emailError.style.display = "block";
+      emailInput.classList.add("error");
+      return false;
+    }
+    if (emailInput.value.trim() !== "" && !emailRegex.test(emailInput.value)) {
+      emailError.textContent = "Please enter a valid email";
+      emailError.style.display = "block";
+      emailInput.classList.add("error");
+      return false;
+    }
+    emailError.textContent = "";
+    emailError.style.display = "none";
+    emailInput.classList.remove("error");
+    return true;
+  }
+  if (emailInput) {
+    emailInput.addEventListener("blur", validateEmail);
+  }
+  var phoneInput = document.getElementById("phoneInput");
+  var phoneError = document.getElementById("phoneError");
+  function formatPhoneNumber(value) {
+    const phoneNumber = value.replace(/\D/g, "");
+    if (phoneNumber.length === 0) {
+      return "";
+    }
+    if (phoneNumber.length < 4) {
+      return `(${phoneNumber}`;
+    }
+    if (phoneNumber.length < 7) {
+      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+    }
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+  }
+  function validatePhone() {
+    const phoneRegex = /^\D*(\d{3})\D*\D*(\d{3})\D*(\d{4})\D*$/;
+    const isRequired = phoneInput.required;
+    if (isRequired && phoneInput.value.trim() === "") {
+      phoneError.textContent = "Phone is required";
+      phoneError.style.display = "block";
+      phoneInput.classList.add("error");
+      return false;
+    }
+    if (phoneInput.value.trim() !== "" && !phoneRegex.test(phoneInput.value)) {
+      phoneError.textContent = "Please enter a valid phone number";
+      phoneError.style.display = "block";
+      phoneInput.classList.add("error");
+      return false;
+    }
+    phoneInput.value = formatPhoneNumber(phoneInput.value);
+    phoneError.textContent = "";
+    phoneError.style.display = "none";
+    phoneInput.classList.remove("error");
+    return true;
+  }
+  if (phoneInput) {
+    phoneInput.addEventListener("input", (event) => {
+      const input = event.target;
+      input.value = formatPhoneNumber(input.value);
+      validatePhone();
+    });
+  }
+  var dobInput = document.getElementById("dobInput");
+  var dobError = document.getElementById("dobError");
+  function validateDOB() {
+    if (dobInput.hasAttribute("required") && dobInput.value.trim() === "") {
+      dobError.textContent = "Date of Birth is required";
+      dobError.style.display = "block";
+      dobInput.classList.add("error");
+      return false;
+    }
+    dobError.textContent = "";
+    dobError.style.display = "none";
+    dobInput.classList.remove("error");
+    return true;
+  }
+  if (dobInput) {
+    dobInput.addEventListener("blur", validateDOB);
+  }
+  var genderInput = document.getElementById("genderInput");
+  var genderError = document.getElementById("genderError");
+  function validateGender() {
+    if (genderInput.hasAttribute("required") && genderInput.value.trim() === "") {
+      genderError.textContent = "Gender is required";
+      genderError.style.display = "block";
+      genderInput.classList.add("error");
+      return false;
+    }
+    genderError.textContent = "";
+    genderError.style.display = "none";
+    genderInput.classList.remove("error");
+    return true;
+  }
+  if (genderInput) {
+    genderInput.addEventListener("blur", validateGender);
+  }
+  var schoolInput = document.getElementById("schoolInput");
+  var schoolError = document.getElementById("schoolError");
+  function validateSchool() {
+    if (schoolInput.hasAttribute("required") && schoolInput.value.trim() === "") {
+      schoolError.textContent = "School name is required";
+      schoolError.style.display = "block";
+      schoolInput.classList.add("error");
+      return false;
+    }
+    schoolError.textContent = "";
+    schoolError.style.display = "none";
+    schoolInput.classList.remove("error");
+    return true;
+  }
+  if (schoolInput) {
+    schoolInput.addEventListener("blur", validateSchool);
+  }
+  var gradeInput = document.getElementById("gradeInput");
+  var gradeError = document.getElementById("gradeError");
+  function validateGrade() {
+    if (gradeInput.hasAttribute("required") && gradeInput.value.trim() === "N/A") {
+      gradeError.textContent = "Grade is required";
+      gradeError.style.display = "block";
+      gradeInput.classList.add("error");
+      return false;
+    }
+    gradeError.textContent = "";
+    gradeError.style.display = "none";
+    gradeInput.classList.remove("error");
+    return true;
+  }
+  if (gradeInput) {
+    gradeInput.addEventListener("blur", validateGrade);
+  }
+  var ethnicityInput = document.getElementById("ethnicityInput");
+  var ethnicityError = document.getElementById("ethnicityError");
+  function validateEthnicity() {
+    if (ethnicityInput.hasAttribute("required") && ethnicityInput.value.trim() === "") {
+      ethnicityError.textContent = "Ethnicity is required";
+      ethnicityError.style.display = "block";
+      ethnicityInput.classList.add("error");
+      return false;
+    }
+    ethnicityError.textContent = "";
+    ethnicityError.style.display = "none";
+    ethnicityError.classList.remove("error");
+    return true;
+  }
+  if (ethnicityError) {
+    ethnicityInput.addEventListener("blur", validateEthnicity);
+  }
+  var healthInput = document.getElementById("healthInput");
+  var healthError = document.getElementById("healthError");
+  function validateHealth() {
+    if (healthInput.hasAttribute("required") && healthInput.value.trim() === "") {
+      healthError.textContent = "This field is required";
+      healthError.style.display = "block";
+      healthInput.classList.add("error");
+      return false;
+    }
+    healthError.textContent = "";
+    healthError.style.display = "none";
+    healthInput.classList.remove("error");
+    return true;
+  }
+  if (healthInput) {
+    healthInput.addEventListener("blur", validateHealth);
+  }
+  var emergencyInput = document.getElementById("emergencyContact");
+  var emergencyError = document.getElementById("emergencyError");
+  function validateEmergency() {
+    if (emergencyInput.hasAttribute("required") && emergencyInput.value.trim() === "") {
+      emergencyError.textContent = "This field is required";
+      emergencyError.style.display = "block";
+      emergencyInput.classList.add("error");
+      return false;
+    }
+    emergencyError.textContent = "";
+    emergencyError.style.display = "none";
+    emergencyInput.classList.remove("error");
+    return true;
+  }
+  if (emergencyInput) {
+    emergencyInput.addEventListener("blur", validateEmergency);
+  }
+  var dismissal = document.getElementById("dismissal");
+  var dismissalError = document.getElementById("dismissalError");
+  function validateDismissal() {
+    if (dismissal.hasAttribute("required") && dismissal.value.trim() === "") {
+      dismissalError.textContent = "This field is required";
+      dismissalError.style.display = "block";
+      dismissal.classList.add("error");
+      return false;
+    }
+    dismissalError.textContent = "";
+    dismissalError.style.display = "none";
+    dismissal.classList.remove("error");
+    return true;
+  }
+  if (dismissal) {
+    dismissal.addEventListener("blur", validateDismissal);
+  }
+  var additionalEmail = document.getElementById("additionalEmail");
+  var additionalEmailError = document.getElementById("additionalEmailError");
+  function validateAdditionalEmail() {
+    const additionalEmailRegex = /^\S+@\S+\.\S+$/;
+    if (additionalEmail.hasAttribute("required") && additionalEmail.value.trim() === "") {
+      additionalEmailError.textContent = "Email is required";
+      additionalEmailError.style.display = "block";
+      additionalEmail.classList.add("error");
+      return false;
+    }
+    if (additionalEmail.value.trim() !== "" && !additionalEmailRegex.test(additionalEmail.value)) {
+      additionalEmailError.textContent = "Please enter a valid email";
+      additionalEmailError.style.display = "block";
+      additionalEmail.classList.add("error");
+      return false;
+    }
+    additionalEmailError.textContent = "";
+    additionalEmailError.style.display = "none";
+    additionalEmail.classList.remove("error");
+    return true;
+  }
+  if (additionalEmail) {
+    additionalEmail.addEventListener("blur", validateAdditionalEmail);
+  }
+  var interestInput = document.getElementById("interestInput");
+  var interestError = document.getElementById("interestError");
+  function validateInterest() {
+    if (interestInput.hasAttribute("required") && interestInput.value.trim() === "") {
+      interestError.textContent = "This field is required";
+      interestError.style.display = "block";
+      interestInput.classList.add("error");
+      return false;
+    }
+    interestError.textContent = "";
+    interestError.style.display = "none";
+    interestInput.classList.remove("error");
+    return true;
+  }
+  if (interestInput) {
+    interestInput.addEventListener("blur", validateInterest);
+  }
+  var bloodType = document.getElementById("bloodType");
+  var bloodTypeError = document.getElementById("bloodTypeError");
+
+  // src/utils/requests/studentRequests.ts
+  async function updateStudentProfile() {
+    const studentId = localStorage.getItem("studentID");
+    const profileString = localStorage.getItem("profile");
+    if (!profileString || !studentId) {
+      return;
+    }
+    const profile = JSON.parse(profileString);
+    const { userID } = profile;
+    const loadingAnimation = document.getElementById("loadingAnimation");
+    loadingAnimation.style.display = "block";
+    const studentInfo = {
+      firstName: document.getElementById("firstNameInput").value,
+      lastName: document.getElementById("lastNameInput").value,
+      email: document.getElementById("emailInput").value,
+      phone: document.getElementById("phoneInput").value,
+      dob: document.getElementById("dobInput").value,
+      gender: document.getElementById("genderInput").value,
+      ethnicity: document.getElementById("ethnicityInput").value,
+      health: document.getElementById("healthInput").value,
+      additionalName: document.getElementById("additionalName").value,
+      additionalEmail: document.getElementById("additionalEmail").value,
+      additionalPhone: document.getElementById("additionalPhone").value,
+      emergencyContact: document.getElementById("emergencyContact").value,
+      dismissal: document.getElementById("dismissal").value,
+      family: document.getElementById("family").value,
+      grade: document.getElementById("gradeInput").value,
+      school: document.getElementById("schoolInput").value,
+      //info: (document.getElementById('infoInput') as HTMLInputElement).value,
+      sendTexts: document.getElementById("sendTexts").checked,
+      photoRelease: document.getElementById("photoRelease").checked,
+      independentTravel: document.getElementById("independentTravel").checked,
+      studentID: studentId,
+      guardianUserID: userID
+      // accountID corresponds to userID in profile object
+    };
+    try {
+      const response = await fetch(
+        `https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/student_profiles/${studentId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(studentInfo)
+        }
+      );
+      if (!response.ok) {
+        const responseData = await response.json();
+        const submitError = document.getElementById("submitError");
+        if (submitError) {
+          if (responseData.message === "Duplicate record detected. Please check your input and try again.") {
+            submitError.textContent = "A user with that email already exists. If your student doesn\u2019t have their own email, please leave blank";
+          } else {
+            submitError.textContent = responseData.message || "An error occurred";
+          }
+          submitError.style.display = "block";
+          loadingAnimation.style.display = "none";
+        }
+      } else {
+        const studentProfile = await response.json();
+        const submitError = document.getElementById("submitError");
+        submitError.style.display = "none";
+        const successMessage = document.getElementById("successMessage");
+        successMessage.style.display = "flex";
+        const form = document.getElementById("addStudentContainer");
+        form.style.display = "none";
+        window.scrollTo(0, 0);
+        const studentName = document.getElementById("studentName");
+        studentName.textContent = `${studentProfile.studentProfile.firstName} ${studentProfile.studentProfile.lastName}`;
+        const studentEmail = document.getElementById("studentEmail");
+        studentEmail.textContent = studentProfile.studentProfile.email;
+        const studentPhone = document.getElementById("studentPhone");
+        studentPhone.textContent = studentProfile.studentProfile.phone;
+        const studentImage = document.getElementById("studentImage");
+        if (studentProfile.studentProfile.image && studentProfile.studentProfile.image.url) {
+          studentImage.src = studentProfile.studentProfile.image.url;
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  // src/studentProfile.ts
+  authenticate();
+  function populateForm(response) {
+    function setValueIfNotNull(elementId, value) {
+      const element = document.getElementById(elementId);
+      if (element) {
+        if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
+          element.value = value;
+        } else if (element.tagName === "SELECT") {
+          const option = Array.from(element.options).find(
+            (opt) => opt.value === value
+          );
+          if (option) {
+            option.selected = true;
+          }
+        }
+      }
+    }
+    setValueIfNotNull("firstNameInput", response.firstName);
+    setValueIfNotNull("lastNameInput", response.lastName);
+    setValueIfNotNull("phoneInput", response.phone);
+    setValueIfNotNull("emailInput", response.email);
+    setValueIfNotNull("dobInput", response.dob);
+    setValueIfNotNull("schoolInput", response.school);
+    setValueIfNotNull("gradeInput", response.grade);
+    setValueIfNotNull("genderInput", response.gender);
+    setValueIfNotNull("ethnicityInput", response.ethnicity);
+    setValueIfNotNull("healthInput", response.health);
+    setValueIfNotNull("emergencyContact", response.emergencyContact);
+    setValueIfNotNull("dismissal", response.dismissal);
+    const checkboxes = ["photoRelease", "independentTravel", "sendTexts"];
+    checkboxes.forEach((checkbox) => {
+      const checkboxElement = document.getElementById(checkbox);
+      if (checkboxElement) {
+        checkboxElement.checked = response[checkbox];
+      }
+    });
+    setValueIfNotNull("family", response.family);
+    setValueIfNotNull("additionalName", response.additionalName);
+    setValueIfNotNull("additionalEmail", response.additionalEmail);
+    setValueIfNotNull("additionalPhone", response.additionalPhone);
+    const studentNameElement = document.getElementById("studentName");
+    if (studentNameElement) {
+      const fullName = `${response.firstName} ${response.lastName}`;
+      studentNameElement.textContent = fullName;
+    }
+    const imageElement = document.getElementById("profileImage");
+    if (response.image && response.image.url) {
+      imageElement.src = response.image.url;
+    } else {
+      imageElement.src = "https://uploads-ssl.webflow.com/64404db37a2b832b7d5aa9f8/64713ce0d5227bcec70c5505_360_F_542361185_VFRJWpR2FH5OiAEVveWO7oZnfSccZfD3.jpg";
+    }
+    const additionalCare = document.getElementById("additionalCare");
+    const additionalOverflow = document.getElementById("additionalOverflow");
+    if (additionalCare && additionalOverflow) {
+      additionalCare.checked = !!response.additionalName || !!response.additionalEmail || !!response.additionalPhone;
+      additionalOverflow.style.height = additionalCare.checked ? "32rem" : "0";
+      additionalCare.addEventListener("click", () => {
+        additionalOverflow.style.height = additionalCare.checked ? "32rem" : "0";
+      });
+    }
+    const familyToggle = document.getElementById("familyToggle");
+    const familyOverflow = document.getElementById("familyOverflow");
+    if (familyToggle && familyOverflow) {
+      familyToggle.checked = !!response.family;
+      familyOverflow.style.height = familyToggle.checked ? "12rem" : "0";
+      familyToggle.addEventListener("click", () => {
+        familyOverflow.style.height = familyToggle.checked ? "12rem" : "0";
+      });
+    }
+    if (response.id) {
+      localStorage.setItem("studentID", String(response.id));
+    }
+  }
+  window.addEventListener("load", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const airtableID = urlParams.get("student");
+    if (airtableID) {
+      const apiUrl = `https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/getStudentProfile`;
+      fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ airtableID })
+      }).then((response) => response.json()).then((data) => {
+        populateForm(data);
+      }).catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+    } else {
+      console.error("Missing airtableID parameter in the URL");
+    }
+  });
+  var imageUploadInput = document.getElementById("imageUpload");
+  uploadStudentImage(imageUploadInput);
+  var firstNameInput2 = document.getElementById("firstNameInput");
+  if (firstNameInput2)
+    firstNameInput2.addEventListener("input", validateFirstName);
+  var lastNameInput2 = document.getElementById("lastNameInput");
+  if (lastNameInput2)
+    lastNameInput2.addEventListener("input", validateLastName);
+  var emailInput2 = document.getElementById("emailInput");
+  if (emailInput2)
+    emailInput2.addEventListener("input", validateEmail);
+  var phoneInput2 = document.getElementById("phoneInput");
+  if (phoneInput2)
+    phoneInput2.addEventListener("input", validatePhone);
+  var dobInput2 = document.getElementById("dobInput");
+  if (dobInput2)
+    dobInput2.addEventListener("input", validateDOB);
+  var genderInput2 = document.getElementById("genderInput");
+  if (genderInput2)
+    genderInput2.addEventListener("input", validateGender);
+  var schoolInput2 = document.getElementById("schoolInput");
+  if (schoolInput2)
+    schoolInput2.addEventListener("input", validateSchool);
+  var gradeInput2 = document.getElementById("gradeInput");
+  if (gradeInput2)
+    gradeInput2.addEventListener("input", validateGrade);
+  var ethnicityInput2 = document.getElementById("ethnicityInput");
+  if (ethnicityInput2)
+    ethnicityInput2.addEventListener("input", validateEthnicity);
+  var healthInput2 = document.getElementById("healthInput");
+  if (healthInput2)
+    healthInput2.addEventListener("input", validateHealth);
+  var emergencyInput2 = document.getElementById("emergencyContact");
+  if (emergencyInput2)
+    emergencyInput2.addEventListener("input", validateEmergency);
+  var dismissal2 = document.getElementById("dismissal");
+  if (dismissal2)
+    dismissal2.addEventListener("input", validateDismissal);
+  var additionalEmail2 = document.getElementById("additionalEmail");
+  if (additionalEmail2)
+    additionalEmail2.addEventListener("input", validateAdditionalEmail);
+  var submitButton = document.getElementById("submitButton");
+  submitButton?.addEventListener("click", (e) => {
+    if (!validateFirstName() || !validateLastName() || !validateEmail() || !validatePhone() || !validateDOB() || !validateGender() || !validateSchool() || !validateGrade() || !validateEthnicity() || !validateHealth() || !validateEmergency() || !validateDismissal() || !validateAdditionalEmail()) {
+      e.preventDefault();
+      const submitError = document.getElementById("submitError");
+      if (submitError) {
+        submitError.style.display = "block";
+        submitError.textContent = "Please make sure you have entered all fields correctly.";
+      }
+    } else {
+      e.preventDefault();
+      updateStudentProfile();
+    }
+  });
+})();
+//# sourceMappingURL=studentProfile.js.map

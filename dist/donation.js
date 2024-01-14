@@ -1,1 +1,213 @@
-"use strict";(()=>{var y=document.getElementById("submitDonationButton");y&&y.addEventListener("click",S);var E=document.getElementById("recurringToggle");E&&E.addEventListener("change",w);var h=document.getElementById("custom");h&&h.addEventListener("change",f);var I=document.getElementById("customAmount");I&&I.addEventListener("input",b);function S(n){n.preventDefault();let s=document.querySelector("#wf-form-donationForm"),t=new FormData(s);console.log("Form Data:",Object.fromEntries(t));let c=t.get("donationSelected"),g=t.get("customAmount"),l=!!t.get("recurring"),M=t.get("paymentType"),T=!!t.get("anonymous"),L=t.get("sendGridFollowUpID"),k=t.get("sendGridContactListID"),H=t.get("campaign"),u={price_id:"",product_id:"",anonymous:T.toString(),paymentType:M,customAmount:g,recurring:l,checkoutCategory:"donation",sendGridFollowUpID:L,sendGridContactList:k,campaign:H};console.log("Metadata:",u);let i=[];if(c==="custom"){if(!g){let r=document.getElementById("donationProductError");r.style.display="block",r.textContent="Please enter a custom donation amount.";return}i.push({price_id:"",quantity:1});let e=document.getElementById("customMask");e.style.height="5rem";let o=document.getElementById("recurringMask");o.style.height=""}else{if(!c){let a=document.getElementById("donationProductError");a.style.display="block",a.textContent="Please select a donation amount.";return}let e=document.querySelector('input[name="donationSelected"]:checked'),o=e.getAttribute("price_id"),r=e.getAttribute("product_id");if(!o||!r){console.error("Price ID or product ID not found for the selected donation product.");return}i.push({price_id:o,quantity:1}),u.product_id=r,u.price_id=o;let A=document.getElementById("customMask");if(A.style.height="",l){let a=document.getElementById("recurringMask");a.style.height="5rem";let p=!1;document.querySelectorAll('input[name="paymentType"]').forEach(v=>{v.checked&&(p=!0)});let d=document.getElementById("donationRecurringError");if(p)d.style.display="none";else{d.style.display="block",d.textContent="Please select a recurring payment type.";return}}else{let a=document.getElementById("recurringMask");a.style.height=""}}let B={success_url:document.getElementById("success_url").value,cancel_url:window.location.href,line_items:i.map(e=>({price:e.price_id,quantity:e.quantity})),metadata:u},m=document.getElementById("loadingWrapper");if(m.style.display="block",l&&!u.paymentType){let e=document.getElementById("donationRecurringError");e.style.display="block",e.textContent="Please select a recurring payment type.",m.style.display="none";return}fetch("https://xszy-vp96-kdkh.n7c.xano.io/api:lRsgmoHt/sessions",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(B)}).then(e=>{if(!e.ok)throw new Error("Request failed.");return e.json()}).then(e=>{let{url:o}=e;window.location.href=o}).catch(e=>{console.error("An error occurred:",e);let o=document.getElementById("requestError"),r=e.response?e.response.message:"Oops! Something went wrong while submitting the form.";o.style.display="block",o.textContent=r}).finally(()=>{m.style.display="none"})}function w(n){let s=n.target,t=document.getElementById("recurringMask");s.checked?t.style.height="5rem":t.style.height=""}var C=document.querySelectorAll('input[name="donationSelected"]');C.forEach(n=>{n.addEventListener("change",f)});function f(n){let s=n.target,t=document.getElementById("customMask"),c=document.getElementById("customAmount");s.value==="custom"?t.style.height="5rem":(t.style.height="",c.value="")}function b(n){let t=n.target.value,c=document.getElementById("metadataCustomAmount");c&&(c.value=t)}var q=document.querySelectorAll('.switch input[type="checkbox"]');q.forEach(function(n){n.addEventListener("click",function(){let s=this.parentNode;s.classList.toggle("checked");let t=s.querySelector(".toggle-text");t&&(this.checked?t.textContent="Yes":t.textContent="No")})});})();
+"use strict";
+(() => {
+  // bin/live-reload.js
+  new EventSource(`${"http://localhost:3000"}/esbuild`).addEventListener("change", () => location.reload());
+
+  // src/donation.ts
+  var submitDonationButton = document.getElementById(
+    "submitDonationButton"
+  );
+  if (submitDonationButton) {
+    submitDonationButton.addEventListener("click", handleSubmit);
+  }
+  var recurringToggle = document.getElementById("recurringToggle");
+  if (recurringToggle) {
+    recurringToggle.addEventListener("change", handleRecurringToggle);
+  }
+  var customRadioButton = document.getElementById("custom");
+  if (customRadioButton) {
+    customRadioButton.addEventListener("change", handleDonationOptionChange);
+  }
+  var customAmountInput = document.getElementById("customAmount");
+  if (customAmountInput) {
+    customAmountInput.addEventListener("input", handleCustomAmountInput);
+  }
+  function handleSubmit(event) {
+    event.preventDefault();
+    const form = document.querySelector("#wf-form-donationForm");
+    const formData = new FormData(form);
+    console.log("Form Data:", Object.fromEntries(formData));
+    const donationSelected = formData.get("donationSelected");
+    const customAmount = formData.get("customAmount");
+    const recurring = formData.get("recurring") ? true : false;
+    const paymentType = formData.get("paymentType");
+    const anonymous = formData.get("anonymous") ? true : false;
+    const sendGridFollowUpID = formData.get("sendGridFollowUpID");
+    const sendGridContactList = formData.get("sendGridContactListID");
+    const campaign = formData.get("campaign");
+    const metadata = {
+      price_id: "",
+      // Initialize the price ID
+      product_id: "",
+      // Initialize the product ID
+      anonymous: anonymous.toString(),
+      paymentType,
+      customAmount,
+      recurring,
+      checkoutCategory: "donation",
+      sendGridFollowUpID,
+      sendGridContactList,
+      campaign
+    };
+    console.log("Metadata:", metadata);
+    const lineItems = [];
+    if (donationSelected === "custom") {
+      if (!customAmount) {
+        const donationProductError = document.getElementById("donationProductError");
+        donationProductError.style.display = "block";
+        donationProductError.textContent = "Please enter a custom donation amount.";
+        return;
+      }
+      lineItems.push({
+        price_id: "",
+        // Leave blank for custom amount
+        quantity: 1
+      });
+      const customMask = document.getElementById("customMask");
+      customMask.style.height = "5rem";
+      const recurringMask = document.getElementById("recurringMask");
+      recurringMask.style.height = "";
+    } else {
+      if (!donationSelected) {
+        const donationProductError = document.getElementById("donationProductError");
+        donationProductError.style.display = "block";
+        donationProductError.textContent = "Please select a donation amount.";
+        return;
+      }
+      const selectedRadioButton = document.querySelector(
+        `input[name="donationSelected"]:checked`
+      );
+      const priceId = selectedRadioButton.getAttribute("price_id");
+      const productId = selectedRadioButton.getAttribute("product_id");
+      if (!priceId || !productId) {
+        console.error("Price ID or product ID not found for the selected donation product.");
+        return;
+      }
+      lineItems.push({
+        price_id: priceId,
+        quantity: 1
+      });
+      metadata.product_id = productId;
+      metadata.price_id = priceId;
+      const customMask = document.getElementById("customMask");
+      customMask.style.height = "";
+      if (recurring) {
+        const recurringMask = document.getElementById("recurringMask");
+        recurringMask.style.height = "5rem";
+        let isPaymentTypeSelected = false;
+        const paymentTypeRadioButtons = document.querySelectorAll('input[name="paymentType"]');
+        paymentTypeRadioButtons.forEach((radioButton) => {
+          const inputElement = radioButton;
+          if (inputElement.checked) {
+            isPaymentTypeSelected = true;
+          }
+        });
+        const donationRecurringError = document.getElementById(
+          "donationRecurringError"
+        );
+        if (isPaymentTypeSelected) {
+          donationRecurringError.style.display = "none";
+        } else {
+          donationRecurringError.style.display = "block";
+          donationRecurringError.textContent = "Please select a recurring payment type.";
+          return;
+        }
+      } else {
+        const recurringMask = document.getElementById("recurringMask");
+        recurringMask.style.height = "";
+      }
+    }
+    const successUrlInput = document.getElementById("success_url");
+    const successUrl = successUrlInput.value;
+    const payload = {
+      success_url: successUrl,
+      cancel_url: window.location.href,
+      // Use the current page as the cancel URL
+      line_items: lineItems.map((item) => ({ price: item.price_id, quantity: item.quantity })),
+      metadata
+    };
+    const loadingWrapper = document.getElementById("loadingWrapper");
+    loadingWrapper.style.display = "block";
+    if (recurring && !metadata.paymentType) {
+      const donationRecurringError = document.getElementById("donationRecurringError");
+      donationRecurringError.style.display = "block";
+      donationRecurringError.textContent = "Please select a recurring payment type.";
+      loadingWrapper.style.display = "none";
+      return;
+    }
+    fetch("https://xszy-vp96-kdkh.n7c.xano.io/api:lRsgmoHt/sessions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+        // Add any additional headers required by your Xano endpoint
+      },
+      body: JSON.stringify(payload)
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error("Request failed.");
+      }
+      return response.json();
+    }).then((data) => {
+      const { url } = data;
+      window.location.href = url;
+    }).catch((error) => {
+      console.error("An error occurred:", error);
+      const requestError = document.getElementById("requestError");
+      const errorMessage = error.response ? error.response.message : "Oops! Something went wrong while submitting the form.";
+      requestError.style.display = "block";
+      requestError.textContent = errorMessage;
+    }).finally(() => {
+      loadingWrapper.style.display = "none";
+    });
+  }
+  function handleRecurringToggle(event) {
+    const recurringToggle2 = event.target;
+    const recurringMask = document.getElementById("recurringMask");
+    if (recurringToggle2.checked) {
+      recurringMask.style.height = "5rem";
+    } else {
+      recurringMask.style.height = "";
+    }
+  }
+  var donationOptions = document.querySelectorAll('input[name="donationSelected"]');
+  donationOptions.forEach((option) => {
+    option.addEventListener("change", handleDonationOptionChange);
+  });
+  function handleDonationOptionChange(event) {
+    const selectedRadioButton = event.target;
+    const customMask = document.getElementById("customMask");
+    const customAmountInput2 = document.getElementById("customAmount");
+    if (selectedRadioButton.value === "custom") {
+      customMask.style.height = "5rem";
+    } else {
+      customMask.style.height = "";
+      customAmountInput2.value = "";
+    }
+  }
+  function handleCustomAmountInput(event) {
+    const customAmountInput2 = event.target;
+    const customAmount = customAmountInput2.value;
+    const metadataCustomAmount = document.getElementById("metadataCustomAmount");
+    if (metadataCustomAmount) {
+      metadataCustomAmount.value = customAmount;
+    }
+  }
+  var toggleSwitches = document.querySelectorAll(
+    '.switch input[type="checkbox"]'
+  );
+  toggleSwitches.forEach(function(switchInput) {
+    switchInput.addEventListener("click", function() {
+      const parentNode = this.parentNode;
+      parentNode.classList.toggle("checked");
+      const toggleText = parentNode.querySelector(".toggle-text");
+      if (toggleText) {
+        if (this.checked) {
+          toggleText.textContent = "Yes";
+        } else {
+          toggleText.textContent = "No";
+        }
+      }
+    });
+  });
+})();
+//# sourceMappingURL=donation.js.map
