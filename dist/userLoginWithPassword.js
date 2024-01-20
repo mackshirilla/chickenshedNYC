@@ -3,95 +3,6 @@
   // bin/live-reload.js
   new EventSource(`${"http://localhost:3000"}/esbuild`).addEventListener("change", () => location.reload());
 
-  // src/utils/requests/auth/authenticateUser.ts
-  function authenticate() {
-    const authToken = localStorage.getItem("authToken");
-    if (!authToken) {
-      window.location.href = "/login";
-      return Promise.reject();
-    }
-    return fetch("https://xszy-vp96-kdkh.n7c.xano.io/api:WyQO-hFi/auth/me", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-        "Content-Type": "application/json"
-      }
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    }).catch((error) => {
-      console.error("Error:", error);
-      const pageWrapper = document.querySelector(".page-wrapper");
-      const isGated = pageWrapper && pageWrapper.hasAttribute("gatedContent");
-      if (isGated) {
-        window.location.href = "/login";
-        localStorage.removeItem("authToken");
-        localStorage.removeItem("profile");
-        localStorage.removeItem("role");
-      }
-    });
-  }
-
-  // src/utils/forms/imageUpload.ts
-  function uploadStudentImage(inputElement) {
-    inputElement.addEventListener("change", async () => {
-      const profileImage = document.getElementById("profileImage");
-      const fileError = document.getElementById("fileError");
-      const fileUploaded = document.getElementById("fileUploaded");
-      const loadingImageAnimation = document.getElementById(
-        "loadingImageAnimation"
-      );
-      const selectedImage = inputElement.files?.[0];
-      if (selectedImage) {
-        if (selectedImage.size > 2 * 1024 * 1024) {
-          fileError.textContent = "File size must be less than 2MB";
-          fileError.style.display = "block";
-          return;
-        }
-        const reader = new FileReader();
-        reader.onload = async () => {
-          profileImage.src = reader.result;
-          fileError.textContent = "";
-          fileError.style.display = "none";
-          loadingImageAnimation.style.display = "flex";
-          try {
-            const studentID = localStorage.getItem("studentID");
-            const response = await fetch(
-              "https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/studentImages",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                  studentID,
-                  studentImage: reader.result
-                })
-              }
-            );
-            if (!response.ok) {
-              throw new Error(`Error: ${response.status} ${response.statusText}`);
-            } else {
-              fileUploaded.style.display = "block";
-            }
-          } catch (error) {
-            fileError.textContent = error.message;
-            fileError.style.display = "block";
-          } finally {
-            loadingImageAnimation.style.display = "none";
-          }
-        };
-        reader.readAsDataURL(selectedImage);
-      } else {
-        profileImage.src = "https://assets.website-files.com/64404db37a2b832b7d5aa9f8/64404db37a2b831d465aaa01_image.svg";
-        fileError.textContent = "";
-        fileError.style.display = "none";
-      }
-    });
-  }
-
   // src/utils/forms/inputValidation.ts
   var firstNameInput = document.getElementById("firstNameInput");
   var firstNameError = document.getElementById("firstNameError");
@@ -444,238 +355,66 @@
   var bloodType = document.getElementById("bloodType");
   var bloodTypeError = document.getElementById("bloodTypeError");
 
-  // src/utils/requests/studentRequests.ts
-  async function updateStudentProfile() {
-    const studentId = localStorage.getItem("studentID");
-    const profileString = localStorage.getItem("profile");
-    if (!profileString || !studentId) {
-      return;
-    }
-    const profile = JSON.parse(profileString);
-    const { userID } = profile;
+  // src/utils/requests/auth/loginRequestWithPassword.ts
+  async function loginWithPassword() {
+    const emailInput2 = document.getElementById("emailInput");
+    const passwordInput2 = document.getElementById("passwordInput");
+    const submitError = document.getElementById("submitError");
     const loadingAnimation = document.getElementById("loadingAnimation");
     loadingAnimation.style.display = "block";
-    const studentInfo = {
-      firstName: document.getElementById("firstNameInput").value,
-      lastName: document.getElementById("lastNameInput").value,
-      email: document.getElementById("emailInput").value,
-      phone: document.getElementById("phoneInput").value,
-      dob: document.getElementById("dobInput").value,
-      gender: document.getElementById("genderInput").value,
-      ethnicity: document.getElementById("ethnicityInput").value,
-      health: document.getElementById("healthInput").value,
-      additionalName: document.getElementById("additionalName").value,
-      additionalEmail: document.getElementById("additionalEmail").value,
-      additionalPhone: document.getElementById("additionalPhone").value,
-      emergencyContact: document.getElementById("emergencyContact").value,
-      dismissal: document.getElementById("dismissal").value,
-      family: document.getElementById("family").value,
-      grade: document.getElementById("gradeInput").value,
-      school: document.getElementById("schoolInput").value,
-      //info: (document.getElementById('infoInput') as HTMLInputElement).value,
-      sendTexts: document.getElementById("sendTexts").checked,
-      photoRelease: document.getElementById("photoRelease").checked,
-      independentTravel: document.getElementById("independentTravel").checked,
-      studentID: studentId,
-      guardianUserID: userID
-      // accountID corresponds to userID in profile object
-    };
+    submitError.style.display = "none";
     try {
-      const response = await fetch(
-        `https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/student_profiles/${studentId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(studentInfo)
-        }
-      );
-      if (!response.ok) {
-        const responseData = await response.json();
-        const submitError = document.getElementById("submitError");
-        if (submitError) {
-          if (responseData.message === "Duplicate record detected. Please check your input and try again.") {
-            submitError.textContent = "A user with that email already exists. If your student doesn\u2019t have their own email, please leave blank";
-          } else {
-            submitError.textContent = responseData.message || "An error occurred";
-          }
-          submitError.style.display = "block";
-          loadingAnimation.style.display = "none";
-        }
-      } else {
-        const studentProfile = await response.json();
-        const submitError = document.getElementById("submitError");
-        submitError.style.display = "none";
-        const successMessage = document.getElementById("successMessage");
-        successMessage.style.display = "flex";
-        const form = document.getElementById("addStudentContainer");
-        form.style.display = "none";
-        window.scrollTo(0, 0);
-        const studentName = document.getElementById("studentName");
-        studentName.textContent = `${studentProfile.studentProfile.firstName} ${studentProfile.studentProfile.lastName}`;
-        const studentEmail = document.getElementById("studentEmail");
-        studentEmail.textContent = studentProfile.studentProfile.email;
-        const studentPhone = document.getElementById("studentPhone");
-        studentPhone.textContent = studentProfile.studentProfile.phone;
-        const studentImage = document.getElementById("studentImage");
-        if (studentProfile.studentProfile.image && studentProfile.studentProfile.image.url) {
-          studentImage.src = studentProfile.studentProfile.image.url;
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  // src/studentProfile.ts
-  authenticate();
-  function populateForm(response) {
-    function setValueIfNotNull(elementId, value) {
-      const element = document.getElementById(elementId);
-      if (element) {
-        if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
-          element.value = value;
-        } else if (element.tagName === "SELECT") {
-          const option = Array.from(element.options).find(
-            (opt) => opt.value === value
-          );
-          if (option) {
-            option.selected = true;
-          }
-        }
-      }
-    }
-    setValueIfNotNull("firstNameInput", response.firstName);
-    setValueIfNotNull("lastNameInput", response.lastName);
-    setValueIfNotNull("phoneInput", response.phone);
-    setValueIfNotNull("emailInput", response.email);
-    setValueIfNotNull("dobInput", response.dob);
-    setValueIfNotNull("schoolInput", response.school);
-    setValueIfNotNull("gradeInput", response.grade);
-    setValueIfNotNull("genderInput", response.gender);
-    setValueIfNotNull("ethnicityInput", response.ethnicity);
-    setValueIfNotNull("healthInput", response.health);
-    setValueIfNotNull("emergencyContact", response.emergencyContact);
-    setValueIfNotNull("dismissal", response.dismissal);
-    const checkboxes = ["photoRelease", "independentTravel", "sendTexts"];
-    checkboxes.forEach((checkbox) => {
-      const checkboxElement = document.getElementById(checkbox);
-      if (checkboxElement) {
-        checkboxElement.checked = response[checkbox];
-      }
-    });
-    setValueIfNotNull("family", response.family);
-    setValueIfNotNull("additionalName", response.additionalName);
-    setValueIfNotNull("additionalEmail", response.additionalEmail);
-    setValueIfNotNull("additionalPhone", response.additionalPhone);
-    const studentNameElement = document.getElementById("studentName");
-    if (studentNameElement) {
-      const fullName = `${response.firstName} ${response.lastName}`;
-      studentNameElement.textContent = fullName;
-    }
-    const imageElement = document.getElementById("profileImage");
-    if (response.image && response.image.url) {
-      imageElement.src = response.image.url;
-    } else {
-      imageElement.src = "https://uploads-ssl.webflow.com/64404db37a2b832b7d5aa9f8/64713ce0d5227bcec70c5505_360_F_542361185_VFRJWpR2FH5OiAEVveWO7oZnfSccZfD3.jpg";
-    }
-    const additionalCare = document.getElementById("additionalCare");
-    const additionalOverflow = document.getElementById("additionalOverflow");
-    if (additionalCare && additionalOverflow) {
-      additionalCare.checked = !!response.additionalName || !!response.additionalEmail || !!response.additionalPhone;
-      additionalOverflow.style.height = additionalCare.checked ? "32rem" : "0";
-      additionalCare.addEventListener("click", () => {
-        additionalOverflow.style.height = additionalCare.checked ? "32rem" : "0";
-      });
-    }
-    const familyToggle = document.getElementById("familyToggle");
-    const familyOverflow = document.getElementById("familyOverflow");
-    if (familyToggle && familyOverflow) {
-      familyToggle.checked = !!response.family;
-      familyOverflow.style.height = familyToggle.checked ? "12rem" : "0";
-      familyToggle.addEventListener("click", () => {
-        familyOverflow.style.height = familyToggle.checked ? "12rem" : "0";
-      });
-    }
-    if (response.id) {
-      localStorage.setItem("studentID", String(response.id));
-    }
-  }
-  window.addEventListener("load", () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const airtableID = urlParams.get("student");
-    if (airtableID) {
-      const apiUrl = `https://xszy-vp96-kdkh.n7c.xano.io/api:2gnTJ2I8/getStudentProfile`;
-      fetch(apiUrl, {
+      const email = emailInput2.value;
+      const password = passwordInput2.value;
+      const url = "https://xszy-vp96-kdkh.n7c.xano.io/api:WyQO-hFi/auth/login";
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ airtableID })
-      }).then((response) => response.json()).then((data) => {
-        populateForm(data);
-      }).catch((error) => {
-        console.error("Error fetching data:", error);
+        body: JSON.stringify({
+          email,
+          password
+          // Include password in the request
+        })
       });
-    } else {
-      console.error("Missing airtableID parameter in the URL");
-    }
-  });
-  var imageUploadInput = document.getElementById("imageUpload");
-  uploadStudentImage(imageUploadInput);
-  var firstNameInput2 = document.getElementById("firstNameInput");
-  if (firstNameInput2)
-    firstNameInput2.addEventListener("input", validateFirstName);
-  var lastNameInput2 = document.getElementById("lastNameInput");
-  if (lastNameInput2)
-    lastNameInput2.addEventListener("input", validateLastName);
-  var emailInput2 = document.getElementById("emailInput");
-  if (emailInput2)
-    emailInput2.addEventListener("input", validateEmail);
-  var phoneInput2 = document.getElementById("phoneInput");
-  if (phoneInput2)
-    phoneInput2.addEventListener("input", validatePhone);
-  var dobInput2 = document.getElementById("dobInput");
-  if (dobInput2)
-    dobInput2.addEventListener("input", validateDOB);
-  var genderInput2 = document.getElementById("genderInput");
-  if (genderInput2)
-    genderInput2.addEventListener("input", validateGender);
-  var schoolInput2 = document.getElementById("schoolInput");
-  if (schoolInput2)
-    schoolInput2.addEventListener("input", validateSchool);
-  var gradeInput2 = document.getElementById("gradeInput");
-  if (gradeInput2)
-    gradeInput2.addEventListener("input", validateGrade);
-  var ethnicityInput2 = document.getElementById("ethnicityInput");
-  if (ethnicityInput2)
-    ethnicityInput2.addEventListener("input", validateEthnicity);
-  var healthInput2 = document.getElementById("healthInput");
-  if (healthInput2)
-    healthInput2.addEventListener("input", validateHealth);
-  var emergencyInput2 = document.getElementById("emergencyContact");
-  if (emergencyInput2)
-    emergencyInput2.addEventListener("input", validateEmergency);
-  var dismissal2 = document.getElementById("dismissal");
-  if (dismissal2)
-    dismissal2.addEventListener("input", validateDismissal);
-  var additionalEmail2 = document.getElementById("additionalEmail");
-  if (additionalEmail2)
-    additionalEmail2.addEventListener("input", validateAdditionalEmail);
-  var submitButton = document.getElementById("submitButton");
-  submitButton?.addEventListener("click", (e) => {
-    if (!validateFirstName() || !validateLastName() || !validateEmail() || !validatePhone() || !validateDOB() || !validateGender() || !validateSchool() || !validateGrade() || !validateEthnicity() || !validateHealth() || !validateEmergency() || !validateDismissal() || !validateAdditionalEmail()) {
-      e.preventDefault();
-      const submitError = document.getElementById("submitError");
-      if (submitError) {
+      if (!response.ok) {
+        const responseData = await response.json();
+        submitError.textContent = responseData.message || "An error occurred";
         submitError.style.display = "block";
-        submitError.textContent = "Please make sure you have entered all fields correctly.";
+      } else {
+        const responseData = await response.json();
+        localStorage.setItem("authToken", responseData.authToken);
+        localStorage.setItem("profile", JSON.stringify(responseData.profile[0]));
+        localStorage.setItem("role", responseData.role);
+        if (responseData.role === "guardian") {
+          window.location.href = "/create-account/step-2";
+        } else {
+          window.location.href = "/student-dashboard";
+        }
       }
+    } catch (error) {
+      console.error(error);
+      submitError.textContent = "Login failed. Please try again.";
+      submitError.style.display = "block";
+    } finally {
+      loadingAnimation.style.display = "none";
+    }
+  }
+
+  // src/userLoginWithPassword.ts
+  var submitButton = document.getElementById("submitButton");
+  submitButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    const isEmailValid = validateEmail();
+    const isPasswordValid = validatePassword();
+    if (!isEmailValid || !isPasswordValid) {
+      const submitError = document.getElementById("submitError");
+      submitError.style.display = "block";
+      submitError.textContent = "Please make sure you have entered all fields correctly.";
     } else {
-      e.preventDefault();
-      updateStudentProfile();
+      loginWithPassword();
     }
   });
 })();
-//# sourceMappingURL=studentProfile.js.map
+//# sourceMappingURL=userLoginWithPassword.js.map

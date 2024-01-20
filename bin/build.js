@@ -22,6 +22,11 @@ const ENTRY_POINTS = [
   'src/studentProfile.ts',
   'src/studentDashboard.ts',
   'src/contactPage.ts',
+  'src/createAccountWithPassword.ts',
+  'src/userLoginWithPassword.ts',
+  'src/userRequestPasswordReset.ts',
+  'src/utils/requests/auth/magicLinkPasswordReset.ts',
+  'src/resetPassword.ts',
 ];
 
 // Config dev serving

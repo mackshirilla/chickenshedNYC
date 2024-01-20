@@ -70,6 +70,89 @@ if (emailInput) {
   emailInput.addEventListener('blur', validateEmail);
 }
 
+// Validate Password Input
+const passwordInput = document.getElementById('passwordInput') as HTMLInputElement;
+const passwordError = document.getElementById('passwordError') as HTMLDivElement;
+
+export function validatePassword() {
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; // Adjust regex based on your requirement
+  if (passwordInput.hasAttribute('required') && passwordInput.value.trim() === '') {
+    passwordError.textContent = 'Password is required';
+    passwordError.style.display = 'block';
+    passwordInput.classList.add('error');
+    return false;
+  }
+  if (!passwordRegex.test(passwordInput.value)) {
+    passwordError.textContent =
+      'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character';
+    passwordError.style.display = 'block';
+    passwordInput.classList.add('error');
+    return false;
+  }
+  passwordError.textContent = '';
+  passwordError.style.display = 'none';
+  passwordInput.classList.remove('error');
+  return true;
+}
+
+if (passwordInput) {
+  passwordInput.addEventListener('blur', validatePassword);
+  passwordInput.addEventListener('input', validatePassword); // Validate password on each input
+}
+
+// Validate New Password Input
+const newPasswordInput = document.getElementById('newPasswordInput') as HTMLInputElement;
+const newPasswordError = document.getElementById('newPasswordError') as HTMLDivElement;
+
+// Validate Confirm Password Input
+const confirmPasswordInput = document.getElementById('confirmPasswordInput') as HTMLInputElement;
+const confirmPasswordError = document.getElementById('confirmPasswordError') as HTMLDivElement;
+
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+export function validateNewPassword() {
+  if (newPasswordInput.hasAttribute('required') && newPasswordInput.value.trim() === '') {
+    newPasswordError.textContent = 'New password is required';
+    newPasswordError.style.display = 'block';
+    newPasswordInput.classList.add('error');
+    return false;
+  }
+  if (!passwordRegex.test(newPasswordInput.value)) {
+    newPasswordError.textContent =
+      'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character';
+    newPasswordError.style.display = 'block';
+    newPasswordInput.classList.add('error');
+    return false;
+  }
+  newPasswordError.textContent = '';
+  newPasswordError.style.display = 'none';
+  newPasswordInput.classList.remove('error');
+  return true;
+}
+
+export function validateConfirmPassword() {
+  if (confirmPasswordInput.value !== newPasswordInput.value) {
+    confirmPasswordError.textContent = 'Passwords do not match';
+    confirmPasswordError.style.display = 'block';
+    confirmPasswordInput.classList.add('error');
+    return false;
+  }
+  confirmPasswordError.textContent = '';
+  confirmPasswordError.style.display = 'none';
+  confirmPasswordInput.classList.remove('error');
+  return true;
+}
+
+if (newPasswordInput) {
+  newPasswordInput.addEventListener('blur', validateNewPassword);
+  newPasswordInput.addEventListener('input', validateNewPassword);
+}
+
+if (confirmPasswordInput) {
+  confirmPasswordInput.addEventListener('blur', validateConfirmPassword);
+  confirmPasswordInput.addEventListener('input', validateConfirmPassword);
+}
+
 // Validate Phone Input
 const phoneInput = document.getElementById('phoneInput') as HTMLInputElement;
 const phoneError = document.getElementById('phoneError') as HTMLDivElement;

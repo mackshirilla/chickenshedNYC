@@ -3,8 +3,8 @@
   // bin/live-reload.js
   new EventSource(`${"http://localhost:3000"}/esbuild`).addEventListener("change", () => location.reload());
 
-  // src/utils/requests/auth/magicLink.ts
-  async function magicLink() {
+  // src/utils/requests/auth/magicLinkPasswordReset.ts
+  async function magicLinkPasswordReset() {
     const verificationError = document.getElementById("verificationError");
     const magicToken = new URLSearchParams(window.location.search).get("magic_token");
     if (!magicToken) {
@@ -33,20 +33,19 @@
         }
       } else {
         const responseData = await response.json();
-        console.log(responseData);
         localStorage.setItem("authToken", responseData.authToken);
         localStorage.setItem("profile", JSON.stringify(responseData.profile[0]));
         localStorage.setItem("role", responseData.role);
-        if (responseData.role === "guardian") {
-          window.location.href = "/create-account/step-2";
-        } else {
-          window.location.href = "/student-dashboard";
-        }
+        window.location.href = "/reset-password";
       }
     } catch (error) {
       console.error(error);
+      if (verificationError) {
+        verificationError.style.display = "block";
+        verificationError.textContent = "Error processing request. Please try again.";
+      }
     }
   }
-  magicLink();
+  magicLinkPasswordReset();
 })();
-//# sourceMappingURL=magicLink.js.map
+//# sourceMappingURL=magicLinkPasswordReset.js.map

@@ -1,18 +1,22 @@
-//create account function
-export async function createAccount() {
+export async function createAccountWithPassword() {
   // Get input values
+  // eslint-disable-next-line prettier/prettier
   const firstNameInput = document.getElementById('firstNameInput') as HTMLInputElement;
   const lastNameInput = document.getElementById('lastNameInput') as HTMLInputElement;
   const emailInput = document.getElementById('emailInput') as HTMLInputElement;
+  const passwordInput = document.getElementById('passwordInput') as HTMLInputElement; // New line for password input
   const submitAccountError = document.getElementById('submitAccountError') as HTMLDivElement;
   const loadingAccountAnimation = document.getElementById(
     'loadingAccountAnimation'
   ) as HTMLDivElement;
-  //display loading animation
+
+  // Display loading animation
   loadingAccountAnimation.style.display = 'block';
+
   // Hide the error message
   submitAccountError.style.display = 'none';
-  // Send post request to xano api endpoint
+
+  // Send post request to Xano API endpoint
   try {
     const response = await fetch('https://xszy-vp96-kdkh.n7c.xano.io/api:WyQO-hFi/auth/signup', {
       method: 'POST',
@@ -23,6 +27,7 @@ export async function createAccount() {
         firstName: firstNameInput.value,
         lastName: lastNameInput.value,
         email: emailInput.value,
+        password: passwordInput.value, // Add the password field here
       }),
     });
 
@@ -34,7 +39,6 @@ export async function createAccount() {
       const responseData = await response.json();
 
       submitAccountError.textContent = responseData.message || 'An error occurred';
-      // Show the error message
       submitAccountError.style.display = 'block';
     } else {
       // Extract authToken from response
@@ -48,22 +52,18 @@ export async function createAccount() {
       localStorage.setItem('role', responseData.role);
       // get local storage profile role
       const profile = JSON.parse(localStorage.getItem('profile') || '{}');
-
+      const { role } = profile;
       // redirect to correct page based on role
-      // if url contains /sessions redirect to /create-account/add-student-profile
       if (window.location.href.includes('/sessions')) {
         window.location.href = '/create-account/add-student-profile';
-        // and store current url in local storage as redirectUrl
         localStorage.setItem('redirectURL', window.location.href);
-      } // else redirect to /create-account/step-2
-      else {
+      } else {
         window.location.href = '/create-account/account-details';
-      } // end if
+      }
     }
   } catch (error) {
     console.error(error);
   } finally {
-    // Hide loading animation
     loadingAccountAnimation.style.display = 'none';
   }
 }
